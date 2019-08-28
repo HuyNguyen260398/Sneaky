@@ -13,15 +13,33 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path
+
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import TemplateView
+from django.contrib import admin
+from django.contrib.auth.views import LogoutView
+from django.urls import path, re_path, include
+from django.views.generic import TemplateView, RedirectView
+
+from accounts.views import LoginView, RegisterView, GuestRegisterView
+
+from .views import home_page, about_page, contact_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='home_page.html')),
+    # path('', TemplateView.as_view(template_name='home_page.html')),
+    re_path(r'^$', home_page, name='home'),
+    re_path(r'^about/$', about_page, name='about'),
+    # re_path(r'^accounts/login/$', RedirectView.as_view(url='/login')),
+    re_path(r'^accounts/$', RedirectView.as_view(url='/account')),
+    re_path(r'^accounts/', include('accounts.passwords.urls')),
+    re_path(r'^account/', include('accounts.urls')),
+    re_path(r'^contact/$', contact_page, name='contact'),
+    re_path(r'^login/$', LoginView.as_view(), name='login'),
+    re_path(r'^logout/$', LogoutView.as_view(), name='logout'),
+    re_path(r'^register/$', RegisterView.as_view(), name='register'),
+    re_path(r'^register/guest/$', GuestRegisterView.as_view(), name='guest_register'),
+    re_path(r'^settings/$', RedirectView.as_view(url='/account')),
 ]
 
 if settings.DEBUG:
