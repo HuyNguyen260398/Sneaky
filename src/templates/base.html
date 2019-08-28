@@ -1,0 +1,22 @@
+{% load static %}
+{% load compress %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Winkel - Free Bootstrap 4 Template by Colorlib</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {% include "base/css.html" %}
+  </head>
+  <body class="goto-here">
+    {% include "base/navbar.html" %}
+
+		{% block content %}{% endblock %}
+
+    {% include "base/footer.html" %}
+
+    {% include "base/js.html" %}
+  </body>
+</html>
