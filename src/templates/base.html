@@ -13,6 +13,14 @@
   <body class="goto-here">
     {% include "base/navbar.html" %}
 
+    {% url 'home' as home_url %}
+
+    {% if request.path != home_url %}
+
+      {% include "base/banner.html" %}
+
+    {% endif %}
+
 		{% block content %}{% endblock %}
 
     {% include "base/footer.html" %}

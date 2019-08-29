@@ -38,6 +38,7 @@ urlpatterns = [
     re_path(r'^contact/$', contact_page, name='contact'),
     re_path(r'^login/$', LoginView.as_view(), name='login'),
     re_path(r'^logout/$', LogoutView.as_view(), name='logout'),
+    re_path(r'^products/', include('products.urls')),
     re_path(r'^register/$', RegisterView.as_view(), name='register'),
     re_path(r'^register/guest/$', GuestRegisterView.as_view(), name='guest_register'),
     re_path(r'^settings/$', RedirectView.as_view(url='/account')),
@@ -45,3 +46,4 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
