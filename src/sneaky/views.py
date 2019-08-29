@@ -12,7 +12,7 @@ def home_page(request):
     }
     if request.user.is_authenticated:
         context['premium_content'] = 'Premium Content!!!'
-    return render(request, 'home_page.html', context)
+    return render(request, 'home.html', context)
 
 
 def about_page(request):
@@ -20,7 +20,7 @@ def about_page(request):
         'title': 'About Page',
         'content': 'Welcome to the about page!'
     }
-    return render(request, 'home_page.html', context)
+    return render(request, 'about.html', context)
 
 
 def contact_page(request):
@@ -38,4 +38,4 @@ def contact_page(request):
         errors = contact_form.errors.as_json()
         if request.is_ajax():
             return HttpResponse(errors, status=400, content_type='application/json')
-    return render(request, 'contact/view.html', context)
+    return render(request, 'contact.html', context)
