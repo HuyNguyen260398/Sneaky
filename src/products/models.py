@@ -86,7 +86,6 @@ class Product(models.Model):
     featured = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
-    is_digital = models.BooleanField(default=False)
 
     objects = ProductManager()
 
@@ -104,8 +103,8 @@ class Product(models.Model):
     def name(self):
         return self.title
 
-    def get_downloads(self):
-        qs = self.productfile_set.all()
+    def get_images(self):
+        qs = self.productimage_set.all()
         return qs
 
 
@@ -117,56 +116,17 @@ def product_pre_save_receiver(sender, instance, *args, **kwargs):
 pre_save.connect(product_pre_save_receiver, sender=Product)
 
 
-def upload_product_file_loc(instance, filename):
-    slug = instance.product.slug
-    id_ = instance.id
-    if id_ is None:
-        Klass = instance.__class__
-        qs = Klass.objects.all().order_by('-pk')
-        if qs.exists():
-            id_ = qs.first().id + 1
-        else:
-            id_ = 0
-    if not slug:
-        slug = unique_slug_generator(instance.product)
-    location = "product/{slug}/{id}/".format(slug=slug, id=id_)
-    return location + filename
-
-
-class ProductFile(models.Model):
+class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     name = models.CharField(max_length=120, null=True, blank=True)
-    file = models.FileField(
-        upload_to=upload_product_file_loc,
-        storage=FileSystemStorage(location=settings.PROTECTED_ROOT)
+    image = models.ImageField(
+        upload_to=upload_image_path,
+        null=True,
+        blank=True
     )
-    free = models.BooleanField(default=False)
-    user_required = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.file.name)
-
-    @property
-    def display_name(self):
-        og_name = get_filename(self.file.name)
-        if self.name:
-            return self.name
-        return og_name
+        return str(self.name)
 
     def get_default_url(self):
         return self.product.get_absolute_url()
-
-    def get_download_url(self):
-        return reverse('products:download', kwargs={'slug': self.product.slug, 'pk': self.pk})
-
-    def get_filename(self, path, new_filename=None):
-        current_filename = os.path.basename(path)
-        if new_filename is not None:
-            filename, file_extension = os.path.splitext(current_filename)
-            escaped_new_filename_base = re.sub(
-                '[^A-Za-z0-9\#]+',
-                '-',
-                new_filename)
-            escaped_filename = escaped_new_filename_base + file_extension
-            return escaped_filename
-        return current_filename

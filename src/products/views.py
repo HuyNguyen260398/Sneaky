@@ -13,7 +13,7 @@ from wsgiref.util import FileWrapper
 # from carts.models import Cart
 # from orders.models import ProductPurchase
 
-from .models import Product, ProductFile
+from .models import Product, ProductImage
 
 
 class ProductFeatureListView(ListView):
