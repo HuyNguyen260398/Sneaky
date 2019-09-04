@@ -1,6 +1,14 @@
 from django.contrib import admin
 
-from .models import Product, ProductImage
+from .models import (
+    Product,
+    ProductType,
+    ProductBrand,
+    ProductColor,
+    ProductSize,
+    ProductVariant,
+    ProductImage
+)
 
 
 class ProductImageInline(admin.TabularInline):
@@ -13,9 +21,19 @@ class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductImageInline]
 
     class Meta:
-        model = Product
+        model = ProductVariant
 
 
-admin.site.register(Product, ProductAdmin)
+admin.site.register(Product)
+
+admin.site.register(ProductType)
+
+admin.site.register(ProductBrand)
+
+admin.site.register(ProductColor)
+
+admin.site.register(ProductSize)
+
+admin.site.register(ProductVariant, ProductAdmin)
 
 admin.site.register(ProductImage)

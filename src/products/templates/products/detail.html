@@ -22,19 +22,32 @@
   			<div class="col-lg-6 mb-5 ftco-animate">
           <div class="row">
             <div class="col-12">
-              <a href="{{ object.image.url }}" class="image-popup"><img src="{{ object.image.url }}" class="img-fluid" alt="Colorlib Template"></a>
+              {% for image in imgs %}
+                {% if forloop.first %}
+                  <a href="{{ image.image.url }}" class="image-popup"><img src="{{ image.image.url }}" class="img-fluid" alt="Colorlib Template"></a>
+                {% endif %}
+              {% endfor %}
+              <!-- <a href="{{ object.get_main_img.url }}" class="image-popup"><img src="{{ object.get_main_img.url }}" class="img-fluid" alt="Colorlib Template"></a> -->
+              <!-- <p>{{ object }}</p>
+              <p>{{ object.id }}</p>
+              <p>{{ object.pk }}</p> -->
+              <!-- <p>{{ object.get_variants }}</p>
+              <p>{{ object.get_first_variant }}</p>
+              <p>{{ first_variant }}</p> -->
             </div>
           </div>
           <div class="row my-3">
-            {% for image in object.get_images %}
-            <div class="col-4">
-              <a href="{{ image.image.url }}" class="image-popup"><img src="{{ image.image.url }}" class="img-fluid" alt="Colorlib Template"></a>
-            </div>
+            {% for image in imgs|slice:"1:" %}
+              <div class="col-4">
+                <a href="{{ image.image.url }}" class="image-popup"><img src="{{ image.image.url }}" class="img-fluid" alt="Colorlib Template"></a>
+              </div>
+              <!-- <p>{{ image.sku }}</p> -->
             {% endfor %}
           </div>
   			</div>
   			<div class="col-lg-6 product-details pl-md-5 ftco-animate">
   				<h3>{{ object.title }}</h3>
+    			<h3>{{ variants }}</h3>
   				<div class="rating d-flex">
   					<p class="text-left mr-4">
   						<a href="#" class="mr-2">5.0</a>
@@ -51,8 +64,20 @@
   						<a href="#" class="mr-2" style="color: #000;">500 <span style="color: #bbb;">Sold</span></a>
   					</p>
   				</div>
-  				<p class="price"><span>${{ object.price }}</span></p>
-  				<p>{{ object.description }}</p>
+  				<p class="price"><span>${{ object.product.price }}</span></p>
+  				<p>{{ object.product.description }}</p>
+          <hr/>
+          <div class="row mt-4">
+          {% for variant in variants %}
+            <div class="col-md-3 ftco-animate">
+            	<div class="product">
+                    <a href="{{ variant.get_absolute_url }}" class="img-prod"><img src="{{ variant.get_main_img.image.url }}" class="img-fluid" alt="Colorlib Template">
+                			<div class="overlay"></div>
+                    </a>
+            	</div>
+            </div>
+          {% endfor %}
+          <hr/>
   				<div class="row mt-4">
   					<div class="col-md-6">
   						<div class="form-group d-flex">

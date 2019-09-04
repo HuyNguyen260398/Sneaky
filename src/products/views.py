@@ -13,7 +13,7 @@ from wsgiref.util import FileWrapper
 # from carts.models import Cart
 # from orders.models import ProductPurchase
 
-from .models import Product, ProductImage
+from .models import Product, ProductVariant
 
 
 class ProductFeatureListView(ListView):
@@ -70,30 +70,48 @@ def product_list_view(request):
 
 
 class ProductDetailSlugView(DetailView):
-    queryset = Product.objects.all()
+    queryset = ProductVariant.objects.all()
     template_name = 'products/detail.html'
 
-    def get_context_data(self, *args, **kwargs):
-        context = super(ProductDetailSlugView, self).get_context_data(*args,
-                                                                      **kwargs)
-        # cart_obj, new_obj = Cart.objects.new_or_get(self.request)
-        # context['cart'] = cart_obj
-        return context
+    # def get_context_data(self, *args, **kwargs):
+    #     context = super(ProductDetailSlugView, self).get_context_data(*args,
+    #                                                                   **kwargs)
+    #     # cart_obj, new_obj = Cart.objects.new_or_get(self.request)
+    #     # context['cart'] = cart_obj
+    #     return context
 
     def get_object(self, *args, **kwargs):
         request = self.request
-        slug = self.kwargs.get('slug')
+        pk = self.kwargs.get('pk')
         try:
-            instance = Product.objects.get(slug=slug, active=True)
-        except Product.DoesNotExist:
+            instance = ProductVariant.objects.get(pk=pk)
+        except ProductVariant.DoesNotExist:
             raise Http404('Not found...')
-        except Product.MultipleObjectsReturned:
-            qs = Product.objects.filter(slug=slug, active=True)
+        except ProductVariant.MultipleObjectsReturned:
+            qs = ProductVariant.objects.filter(pk=pk)
             instance = qs.first()
         except Exception:
             raise Http404('Uhhmm')
 
         return instance
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProductDetailSlugView, self).get_context_data(*args, **kwargs)
+        pk = self.kwargs.get('pk')
+        qs = ProductVariant.objects.filter(pk=pk)
+        if qs.count() < 1:
+            raise Http404('Not found!')
+        instance = qs.first()
+        # product = Product.objects.filter(id=instance.id).first()
+        # product_variants = product.get_variants()
+        product_variants = ProductVariant.objects.filter(
+            product=instance.product)
+        imgs = instance.get_imgs()
+
+        context['imgs'] = imgs
+        context['variants'] = product_variants
+        context['pk'] = pk
+        return context
 
 
 # class ProductDownloadView(View):
@@ -146,12 +164,16 @@ class ProductDetailView(DetailView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProductDetailView, self).get_context_data(*args, **kwargs)
+        pk = self.kwargs.get('pk')
+        product = Product.objects.filter(pk=pk)
+        first_variant = product.get_first_variant()
+        context['first_variant'] = first_variant
         return context
 
     def get_queryset(self, *args, **kwargs):
-        request = self.request
+        # request = self.request
         pk = self.kwargs.get('pk')
-        return Product.objects.filter(pk=pk)
+        return ProductVariant.objects.filter(pk=pk)
 
 
 def product_detail_view(request, pk=None, *args, **kwargs):

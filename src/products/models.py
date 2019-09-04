@@ -31,6 +31,25 @@ def upload_image_path(instance, filename):
     )
 
 
+class ProductBrand(models.Model):
+    brand = models.CharField(max_length=120)
+    email = models.CharField(max_length=120)
+    slug = models.SlugField(blank=True, unique=True)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.brand
+
+
+class ProductType(models.Model):
+    type = models.CharField(max_length=100)
+    slug = models.SlugField(blank=True, unique=True)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.type
+
+
 class ProductQuerySet(models.QuerySet):
     def featured(self):
         return self.filter(featured=True, active=True)
@@ -86,12 +105,15 @@ class Product(models.Model):
     featured = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+    type = models.ForeignKey(ProductType, on_delete=models.CASCADE, blank=True, null=True)
+    brand = models.ForeignKey(ProductBrand, on_delete=models.CASCADE, blank=True, null=True)
 
     objects = ProductManager()
 
     def get_absolute_url(self):
         # return '/products/{slug}/'.format(slug=self.slug)
-        return reverse('products:detail', kwargs={'slug': self.slug})
+        first_variant = self.get_first_variant()
+        return reverse('products:detail', kwargs={'pk': self.id})
 
     def __str__(self):
         return self.title
@@ -103,8 +125,12 @@ class Product(models.Model):
     def name(self):
         return self.title
 
-    def get_images(self):
-        qs = self.productimage_set.all()
+    def get_variants(self):
+        qs = self.productvariant_set.all()
+        return qs
+
+    def get_first_variant(self):
+        qs = self.get_variants()[0]
         return qs
 
 
@@ -116,8 +142,90 @@ def product_pre_save_receiver(sender, instance, *args, **kwargs):
 pre_save.connect(product_pre_save_receiver, sender=Product)
 
 
+class ProductColor(models.Model):
+    title = models.CharField(max_length=20)
+    slug = models.SlugField(blank=True, unique=True)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def color(self):
+        return self.title
+
+
+def product_color_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+
+pre_save.connect(product_color_pre_save_receiver, sender=ProductColor)
+
+
+class ProductSize(models.Model):
+    title = models.CharField(max_length=10)
+    slug = models.SlugField(blank=True, unique=True)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def size(self):
+        return self.title
+
+
+def product_size_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+
+pre_save.connect(product_size_pre_save_receiver, sender=ProductSize)
+
+
+# class ProductVariantManager(models.Manager):
+#     def get_colors(self, id):
+#         qs = self.get_queryset().filter
+
+
+class ProductVariant(models.Model):
+    title = models.CharField(max_length=120)
+    slug = models.SlugField(blank=True, unique=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, null=True, blank=True)
+    size = models.ForeignKey(ProductSize, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return "{i}-{p}-{c}-{s}".format(i=self.id, p=self.product.id, c=self.color.title, s=self.size.title)
+
+    def get_absolute_url(self):
+        return reverse('products:detail', kwargs={'pk': self.id})
+
+    def get_imgs(self):
+        qs = self.productimage_set.all()
+        return qs
+
+    def get_main_img(self):
+        qs = self.get_imgs()[0]
+        return qs
+
+    # def get_sub_imgs(self):
+    #     qs = self.get_imgs()[1:]
+    #     return qs
+
+
+def productvariant_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+
+pre_save.connect(productvariant_pre_save_receiver, sender=ProductVariant)
+
+
 class ProductImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    productvariant = models.ForeignKey(
+        ProductVariant, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=120, null=True, blank=True)
     image = models.ImageField(
         upload_to=upload_image_path,
@@ -129,4 +237,4 @@ class ProductImage(models.Model):
         return str(self.name)
 
     def get_default_url(self):
-        return self.product.get_absolute_url()
+        return self.productvariant.get_absolute_url()
