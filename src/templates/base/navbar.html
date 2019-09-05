@@ -47,7 +47,7 @@
         <li class="nav-item {% if request.path == about_url %}custom-active{% endif %}"><a href="{{ about_url }}" class="nav-link">About</a></li>
         <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
         <li class="nav-item {% if request.path == contact_url %}custom-active{% endif %}"><a href="{{ contact_url }}" class="nav-link">Contact</a></li>
-        <li class="nav-item"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+        <li class="nav-item"><a href="cart.html" class="nav-link"><span><i class="fas fa-shopping-bag"></i></span>[0]</a></li>
         {% if request.user.is_authenticated %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

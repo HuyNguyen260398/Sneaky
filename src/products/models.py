@@ -184,9 +184,31 @@ def product_size_pre_save_receiver(sender, instance, *args, **kwargs):
 pre_save.connect(product_size_pre_save_receiver, sender=ProductSize)
 
 
-# class ProductVariantManager(models.Manager):
-#     def get_colors(self, id):
-#         qs = self.get_queryset().filter
+class ProductVariantQuerySet(models.QuerySet):
+    def get_colors(self, product):
+        qs = self.filter(product=product)
+        color_list = qs.values_list('color', flat=True).distinct()
+        unique_list = []
+        for i in color_list:
+            new_qs = qs.filter(color_id=i).first()
+            unique_list.append(new_qs)
+        return unique_list
+
+
+class ProductVariantManager(models.Manager):
+    def get_queryset(self):
+        return ProductVariantQuerySet(self.model, using=self._db)
+
+    def get_colors(self, product):
+        return self.get_queryset().get_colors(product)
+    # def get_colors(self, product):
+    #     qs = self.get_queryset().filter(product=product)
+    #     color_list = qs.values_list('color', flat=True).distinct()
+    #     unique_list = []
+    #     for i in color_list:
+    #         new_qs = qs.filter(color_id=i).first()
+    #         unique_list.append(new_qs)
+    #     return unique_list
 
 
 class ProductVariant(models.Model):
@@ -195,6 +217,8 @@ class ProductVariant(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
     color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, null=True, blank=True)
     size = models.ForeignKey(ProductSize, on_delete=models.CASCADE, null=True, blank=True)
+
+    objects = ProductVariantManager()
 
     def __str__(self):
         return "{i}-{p}-{c}-{s}".format(i=self.id, p=self.product.id, c=self.color.title, s=self.size.title)

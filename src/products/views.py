@@ -98,18 +98,20 @@ class ProductDetailSlugView(DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super(ProductDetailSlugView, self).get_context_data(*args, **kwargs)
         pk = self.kwargs.get('pk')
-        qs = ProductVariant.objects.filter(pk=pk)
-        if qs.count() < 1:
+        qs = ProductVariant.objects.all()
+        this_instance = qs.filter(pk=pk)
+        if this_instance.count() < 1:
             raise Http404('Not found!')
-        instance = qs.first()
+        instance = this_instance.first()
         # product = Product.objects.filter(id=instance.id).first()
         # product_variants = product.get_variants()
-        product_variants = ProductVariant.objects.filter(
-            product=instance.product)
+        colors = qs.get_colors(product=instance.product)
+        sizes = qs.filter(product=instance.product).filter(color=instance.color)
         imgs = instance.get_imgs()
 
         context['imgs'] = imgs
-        context['variants'] = product_variants
+        context['colors'] = colors
+        context['sizes'] = sizes
         context['pk'] = pk
         return context
 
