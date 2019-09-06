@@ -45,7 +45,7 @@
         <li class="nav-item {% if request.path == home_url %}custom-active{% endif %}"><a href="{{ home_url }}" class="nav-link">Home</a></li>
         <li class="nav-item {% if request.path == product_list_url %}custom-active{% endif %}"><a href="{{ product_list_url }}" class="nav-link">Shop</a></li>
         <li class="nav-item {% if request.path == about_url %}custom-active{% endif %}"><a href="{{ about_url }}" class="nav-link">About</a></li>
-        <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
+
         <li class="nav-item {% if request.path == contact_url %}custom-active{% endif %}"><a href="{{ contact_url }}" class="nav-link">Contact</a></li>
         <li class="nav-item"><a href="cart.html" class="nav-link"><span><i class="fas fa-shopping-bag"></i></span>[0]</a></li>
         {% if request.user.is_authenticated %}
@@ -65,8 +65,16 @@
         {% else %}
           <li class="nav-item {% if request.path == login_url %}custom-active{% endif %}"><a href="{{ login_url }}" class="nav-link"><i class="fas fa-sign-in-alt"></i></a></li>
         {% endif %}
-
+        <li class="nav-item"><a href="#collapseSearchForm" class="nav-link" data-toggle="collapse" aria-expanded="false" aria-controls="#collapseSearchForm"><i class="fas fa-search"></i></a></li>
       </ul>
     </div>
   </div>
 </nav>
+
+
+
+<div class="collapse" id="collapseSearchForm">
+  <div class="card card-body">
+    {% include 'search/snippets/search-form.html' %}
+  </div>
+</div>

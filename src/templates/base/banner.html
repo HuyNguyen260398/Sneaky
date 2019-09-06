@@ -11,6 +11,7 @@
 {% url "account:user-update" as account_update_url %}
 {% url 'products:list' as product_list_url %}
 {% url 'products:detail' as product_detail_url %}
+{% url 'search:query' as search_url %}
 <!-- {% url 'cart:home' as cart_url %} -->
 
 <div class="hero-wrap hero-bread" style="background-image: url('{% static 'images/bg_6.jpg' %}');">
@@ -46,6 +47,10 @@
                 <span>Shop</span>
                 </p>
                 <h1 class="mb-0 bread">Let's Shop!</h1>
+              {% elif request.path == search_url %}
+                <span>Search</span>
+                </p>
+                <h1 class="mb-0 bread">Results</h1>
               {% else %}
                 <span class="mr-2">Product</span>
                 <span class="mr-2">/</span>

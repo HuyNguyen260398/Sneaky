@@ -58,7 +58,7 @@ class ProductListView(ListView):
 
     def get_queryset(self, *args, **kwargs):
         request = self.request
-        return Product.objects.all()
+        return Product.objects.all().active()
 
 
 def product_list_view(request):

@@ -41,6 +41,14 @@ class ProductBrand(models.Model):
         return self.brand
 
 
+def productbrand_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+
+pre_save.connect(productbrand_pre_save_receiver, sender=ProductBrand)
+
+
 class ProductType(models.Model):
     type = models.CharField(max_length=100)
     slug = models.SlugField(blank=True, unique=True)
@@ -48,6 +56,14 @@ class ProductType(models.Model):
 
     def __str__(self):
         return self.type
+
+
+def producttype_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+
+pre_save.connect(producttype_pre_save_receiver, sender=ProductType)
 
 
 class ProductQuerySet(models.QuerySet):
@@ -61,8 +77,7 @@ class ProductQuerySet(models.QuerySet):
         lookups = (
             Q(title__icontains=query) |
             Q(description__icontains=query) |
-            Q(price__icontains=query) |
-            Q(tag__title__icontains=query)
+            Q(price__icontains=query)
         )
         return self.filter(lookups).distinct()
 
@@ -113,7 +128,7 @@ class Product(models.Model):
     def get_absolute_url(self):
         # return '/products/{slug}/'.format(slug=self.slug)
         first_variant = self.get_first_variant()
-        return reverse('products:detail', kwargs={'pk': self.id})
+        return reverse('products:detail', kwargs={'pk': first_variant.id})
 
     def __str__(self):
         return self.title
@@ -132,6 +147,11 @@ class Product(models.Model):
     def get_first_variant(self):
         qs = self.get_variants()[0]
         return qs
+
+    def get_first_variant_img(self):
+        qs = self.get_first_variant()
+        img = qs.get_main_img()
+        return img
 
 
 def product_pre_save_receiver(sender, instance, *args, **kwargs):
@@ -155,12 +175,12 @@ class ProductColor(models.Model):
         return self.title
 
 
-def product_color_pre_save_receiver(sender, instance, *args, **kwargs):
+def productcolor_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
 
 
-pre_save.connect(product_color_pre_save_receiver, sender=ProductColor)
+pre_save.connect(productcolor_pre_save_receiver, sender=ProductColor)
 
 
 class ProductSize(models.Model):
@@ -176,12 +196,12 @@ class ProductSize(models.Model):
         return self.title
 
 
-def product_size_pre_save_receiver(sender, instance, *args, **kwargs):
+def productsize_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
 
 
-pre_save.connect(product_size_pre_save_receiver, sender=ProductSize)
+pre_save.connect(productsize_pre_save_receiver, sender=ProductSize)
 
 
 class ProductVariantQuerySet(models.QuerySet):
@@ -201,14 +221,6 @@ class ProductVariantManager(models.Manager):
 
     def get_colors(self, product):
         return self.get_queryset().get_colors(product)
-    # def get_colors(self, product):
-    #     qs = self.get_queryset().filter(product=product)
-    #     color_list = qs.values_list('color', flat=True).distinct()
-    #     unique_list = []
-    #     for i in color_list:
-    #         new_qs = qs.filter(color_id=i).first()
-    #         unique_list.append(new_qs)
-    #     return unique_list
 
 
 class ProductVariant(models.Model):
@@ -233,10 +245,6 @@ class ProductVariant(models.Model):
     def get_main_img(self):
         qs = self.get_imgs()[0]
         return qs
-
-    # def get_sub_imgs(self):
-    #     qs = self.get_imgs()[1:]
-    #     return qs
 
 
 def productvariant_pre_save_receiver(sender, instance, *args, **kwargs):
