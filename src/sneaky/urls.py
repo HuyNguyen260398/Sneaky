@@ -22,6 +22,7 @@ from django.urls import path, re_path, include
 from django.views.generic import TemplateView, RedirectView
 
 from accounts.views import LoginView, RegisterView, GuestRegisterView
+from carts.views import cart_detail_api_view
 
 from .views import home_page, about_page, contact_page
 
@@ -34,6 +35,8 @@ urlpatterns = [
     path('accounts/', RedirectView.as_view(url='/account')),
     path('accounts/', include('accounts.passwords.urls')),
     path('account/', include('accounts.urls')),
+    path('api/cart/', cart_detail_api_view, name='api_cart'),
+    path('cart/', include('carts.urls')),
     path('contact/', contact_page, name='contact'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
