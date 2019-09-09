@@ -1,6 +1,7 @@
 import os
 import random
 import re
+import decimal
 
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
@@ -107,16 +108,8 @@ class Product(models.Model):
     title = models.CharField(max_length=120)
     slug = models.SlugField(blank=True, unique=True)
     description = models.TextField()
-    price = models.DecimalField(
-        decimal_places=2,
-        max_digits=20,
-        default=40.00
-    )
-    image = models.ImageField(
-        upload_to=upload_image_path,
-        null=True,
-        blank=True
-    )
+    discount_percent = models.IntegerField(default=0)
+    price = models.DecimalField(decimal_places=2, max_digits=20, default=40.00)
     featured = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -139,6 +132,10 @@ class Product(models.Model):
     @property
     def name(self):
         return self.title
+
+    @property
+    def discount_price(self):
+        return self.price - (self.discount_percent * self.price * decimal.Decimal(0.01))
 
     def get_variants(self):
         qs = self.productvariant_set.all()

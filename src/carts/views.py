@@ -83,7 +83,6 @@ def remove_from_cart(request, slug):
     product = get_object_or_404(ProductVariant, slug=slug)
     if product is not None:
         cart, new_cart = Cart.objects.new_or_get(request)
-        # cart_item, new_item = CartItem.objects.get_or_create(product=product)
         item_qs = cart.items.filter(product__slug=product.slug)
         if item_qs.exists():
             cart_item = item_qs[0]
@@ -99,7 +98,6 @@ def remove_item_from_cart(request, slug):
     product = get_object_or_404(ProductVariant, slug=slug)
     if product is not None:
         cart, new_cart = Cart.objects.new_or_get(request)
-        # cart_item, new_item = CartItem.objects.get_or_create(product=product)
         item_qs = cart.items.filter(product__slug=product.slug)
         if item_qs.exists():
             cart_item = item_qs[0]

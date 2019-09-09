@@ -55,7 +55,11 @@
   						<a href="#" class="mr-2" style="color: #000;">500 <span style="color: #bbb;">Sold</span></a>
   					</p>
   				</div>
-  				<p class="price"><span>${{ object.product.price }}</span></p>
+          {% if object.product.discount_percent %}
+						<p class="price"><span class="mr-2 price-dc" style="color: #bbb;"><del>${{ object.product.price }}</del></span><span class="price-sale">${{ object.product.discount_price|floatformat:2 }}</span></p>
+					{% else %}
+						<p class="price"><span>${{ object.product.price }}</span></p>
+					{% endif %}
   				<p>{{ object.product.description }}</p>
           <hr/>
           <h5>Color</h5>
