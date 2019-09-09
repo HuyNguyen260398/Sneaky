@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from accounts.forms import LoginForm, GuestForm
 # from addresses.forms import AddressForm
@@ -8,9 +8,9 @@ from accounts.forms import LoginForm, GuestForm
 from accounts.models import GuestEmail
 # from addresses.models import Address
 # from billing.models import BillingProfile
-from products.models import Product
+from products.models import Product, ProductVariant
 # from orders.models import Order
-from .models import Cart
+from .models import Cart, CartItem
 
 # import stripe
 
@@ -25,8 +25,9 @@ def cart_detail_api_view(request):
     products = [{
         'id': x.id,
         'url': x.get_absolute_url(),
-        'name': x.name,
-        'price': x.price
+        'image': x.get_main_img.image.url(),
+        'name': x.product.title,
+        'price': x.product.price
     } for x in cart_obj.products.all()]
     cart_data = {'products': products, 'subtotal': cart_obj.subtotal, 'total': cart_obj.total}
     return JsonResponse(cart_data)
@@ -41,7 +42,7 @@ def cart_update(request):
     product_id = request.POST.get('product_id')
     if product_id is not None:
         try:
-            product_obj = Product.objects.get(id=product_id)
+            product_obj = ProductVariant.objects.get(id=product_id)
         except Product.DoesNotExist:
             return redirect('cart:home')
         cart_obj, new_obj = Cart.objects.new_or_get(request)
@@ -59,6 +60,50 @@ def cart_update(request):
                 'cartItemCount': cart_obj.products.count(),
             }
             return JsonResponse(json_data, status=200)
+    return redirect('cart:home')
+
+
+def add_to_cart(request, slug):
+    product = get_object_or_404(ProductVariant, slug=slug)
+    if product is not None:
+        cart, new_cart = Cart.objects.new_or_get(request)
+        # cart_item, new_item = CartItem.objects.get_or_create(product=product)
+        item_qs = cart.items.filter(product__slug=product.slug)
+        if item_qs.exists():
+            cart_item = item_qs[0]
+            cart_item.quantity += 1
+            cart_item.save()
+        else:
+            cart_item = CartItem.objects.create(product=product)
+            cart.items.add(cart_item)
+    return redirect('cart:home')
+
+
+def remove_from_cart(request, slug):
+    product = get_object_or_404(ProductVariant, slug=slug)
+    if product is not None:
+        cart, new_cart = Cart.objects.new_or_get(request)
+        # cart_item, new_item = CartItem.objects.get_or_create(product=product)
+        item_qs = cart.items.filter(product__slug=product.slug)
+        if item_qs.exists():
+            cart_item = item_qs[0]
+            if cart_item.quantity > 1:
+                cart_item.quantity -= 1
+                cart_item.save()
+            else:
+                cart.items.remove(cart_item)
+    return redirect('cart:home')
+
+
+def remove_item_from_cart(request, slug):
+    product = get_object_or_404(ProductVariant, slug=slug)
+    if product is not None:
+        cart, new_cart = Cart.objects.new_or_get(request)
+        # cart_item, new_item = CartItem.objects.get_or_create(product=product)
+        item_qs = cart.items.filter(product__slug=product.slug)
+        if item_qs.exists():
+            cart_item = item_qs[0]
+            cart.items.remove(cart_item)
     return redirect('cart:home')
 
 

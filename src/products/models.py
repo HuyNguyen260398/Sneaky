@@ -128,7 +128,7 @@ class Product(models.Model):
     def get_absolute_url(self):
         # return '/products/{slug}/'.format(slug=self.slug)
         first_variant = self.get_first_variant()
-        return reverse('products:detail', kwargs={'pk': first_variant.id})
+        return reverse('products:detail', kwargs={'slug': first_variant.slug})
 
     def __str__(self):
         return self.title
@@ -236,7 +236,16 @@ class ProductVariant(models.Model):
         return "{i}-{p}-{c}-{s}".format(i=self.id, p=self.product.id, c=self.color.title, s=self.size.title)
 
     def get_absolute_url(self):
-        return reverse('products:detail', kwargs={'pk': self.id})
+        return reverse('products:detail', kwargs={'slug': self.slug})
+
+    def get_add_to_cart_url(self):
+        return reverse('cart:add-to-cart', kwargs={'slug': self.slug})
+
+    def get_remove_from_cart_url(self):
+        return reverse('cart:remove_from_cart', kwargs={'slug': self.slug})
+
+    def get_remove_item_url(self):
+        return reverse('cart:remove_item', kwargs={'slug': self.slug})
 
     def get_imgs(self):
         qs = self.productimage_set.all()

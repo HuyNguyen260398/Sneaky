@@ -10,86 +10,82 @@
     <div class="row">
       <div class="col-md-12 ftco-animate">
         <div class="cart-list">
-          <table class="table">
+          <table class="table cart-table">
             <thead class="thead-primary">
               <tr class="text-center">
+                <th>No.</th>
                 <th>&nbsp;</th>
-                <th>&nbsp;</th>
-                <th>Product</th>
+                <th colspan="2">Product</th>
                 <th>Price</th>
                 <th>Quantity</th>
                 <th>Total</th>
               </tr>
             </thead>
             <tbody>
+              {% for item in cart.items.all %}
               <tr class="text-center">
-                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
+                <td scope="row">{{ forloop.counter }}</td>
 
-                <td class="image-prod"><div class="img" style="background-image:url(images/product-3.jpg);"></div></td>
+                <td class="product-remove"><a href="{{ item.product.get_remove_item_url }}"><span class="ion-ios-close"></span></a></td>
+
+                <td class="image-prod"><div class="img" style="background-image:url({{ item.product.get_main_img.image.url }}); width:120px; height:128px;"></div></td>
 
                 <td class="product-name">
-                  <h3>Young Woman Wearing Dress</h3>
-                  <p>Far far away, behind the word mountains, far from the countries</p>
+                  <h3>{{ item.product.title }}</h3>
                 </td>
 
-                <td class="price">$4.90</td>
+                <td class="price">${{ item.product.product.price }}</td>
 
                 <td class="quantity">
                   <div class="input-group mb-3">
-                    <input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
+                    <span class="input-group-btn mr-2">
+                      	<a href="{{ item.product.get_remove_from_cart_url }}" class="quantity-left-minus btn"  data-type="minus" data-field="">
+                         <i class="ion-ios-remove"></i>
+                      	</a>
+                  		</span>
+                   	<input type="text" id="quantity" name="quantity" class="form-control input-number" value="{{ item.quantity }}" min="1" max="100">
+                   	<span class="input-group-btn ml-2">
+                      	<a href="{{ item.product.get_add_to_cart_url }}" class="quantity-right-plus btn" data-type="plus" data-field="">
+                           <i class="ion-ios-add"></i>
+                       </a>
+                   	</span>
                   </div>
                 </td>
 
-                <td class="total">$4.90</td>
+                <td class="total">${{ item.get_subtotal }}</td>
               </tr><!-- END TR-->
+              {% endfor %}
 
-              <tr class="text-center">
-                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
-
-                <td class="image-prod"><div class="img" style="background-image:url(images/product-4.jpg);"></div></td>
-
-                <td class="product-name">
-                  <h3>Young Woman Wearing Dress</h3>
-                  <p>Far far away, behind the word mountains, far from the countries</p>
-                </td>
-
-                <td class="price">$15.70</td>
-
-                <td class="quantity">
-                  <div class="input-group mb-3">
-                    <input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
-                  </div>
-                </td>
-
-                <td class="total">$15.70</td>
-              </tr><!-- END TR-->
             </tbody>
           </table>
+          <div class="cart-item-remove-form" style='display:none'>
+            {% include 'carts/snippets/remove.html' %}
+          </div>
         </div>
       </div>
     </div>
     <div class="row justify-content-center">
       <div class="col col-lg-5 col-md-6 mt-5 cart-wrap ftco-animate">
         <div class="cart-total mb-3">
-          <h3>Cart Totals</h3>
-          <p class="d-flex">
-            <span>Subtotal</span>
-            <span>$20.60</span>
-          </p>
-          <p class="d-flex">
-            <span>Delivery</span>
-            <span>$0.00</span>
-          </p>
-          <p class="d-flex">
-            <span>Discount</span>
-            <span>$3.00</span>
-          </p>
-          <hr>
-          <p class="d-flex total-price">
-            <span>Total</span>
-            <span>$17.60</span>
-          </p>
-        </div>
+					<h3>Cart Totals</h3>
+					<p class="d-flex">
+						<span>Subtotal</span>
+						<span>$20.60</span>
+					</p>
+					<p class="d-flex">
+						<span>Delivery</span>
+						<span>$0.00</span>
+					</p>
+					<p class="d-flex">
+						<span>Discount</span>
+						<span>$3.00</span>
+					</p>
+					<hr>
+					<p class="d-flex total-price">
+						<span>Total</span>
+						<span>$17.60</span>
+					</p>
+				</div>
         <p class="text-center"><a href="checkout.html" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
       </div>
     </div>

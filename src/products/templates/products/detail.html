@@ -27,13 +27,6 @@
                   <a href="{{ image.image.url }}" class="image-popup"><img src="{{ image.image.url }}" class="img-fluid" alt="Colorlib Template"></a>
                 {% endif %}
               {% endfor %}
-              <!-- <a href="{{ object.get_main_img.url }}" class="image-popup"><img src="{{ object.get_main_img.url }}" class="img-fluid" alt="Colorlib Template"></a> -->
-              <!-- <p>{{ object }}</p>
-              <p>{{ object.id }}</p>
-              <p>{{ object.pk }}</p> -->
-              <!-- <p>{{ object.get_variants }}</p>
-              <p>{{ object.get_first_variant }}</p>
-              <p>{{ first_variant }}</p> -->
             </div>
           </div>
           <div class="row my-3">
@@ -41,7 +34,6 @@
               <div class="col-4">
                 <a href="{{ image.image.url }}" class="image-popup"><img src="{{ image.image.url }}" class="img-fluid" alt="Colorlib Template"></a>
               </div>
-              <!-- <p>{{ image.sku }}</p> -->
             {% endfor %}
           </div>
   			</div>
@@ -111,7 +103,7 @@
           		<p style="color: #000;">80 piece available</p>
           	</div>
         	</div>
-        	<p><a href="cart.html" class="btn btn-black py-3 px-5">Add to Bag</a></p>
+        	<p><a href="{{ object.get_add_to_cart_url }}" class="btn btn-black py-3 px-5">Add to Bag</a></p>
 
   		</div>
   	</div>

@@ -10,7 +10,7 @@ from mimetypes import guess_type
 from wsgiref.util import FileWrapper
 
 # from analytics.mixins import ObjectViewedMixin
-# from carts.models import Cart
+from carts.models import Cart
 # from orders.models import ProductPurchase
 
 from .models import Product, ProductVariant
@@ -48,12 +48,14 @@ class ProductFeatureDetailView(DetailView):
 
 
 class ProductListView(ListView):
+    model = Product
+    paginate_by = 9
     template_name = 'products/list.html'
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProductListView, self).get_context_data(*args, **kwargs)
-        # cart_obj, new_obj = Cart.objects.new_or_get(self.request)
-        # context['cart'] = cart_obj
+        cart_obj, new_obj = Cart.objects.new_or_get(self.request)
+        context['cart'] = cart_obj
         return context
 
     def get_queryset(self, *args, **kwargs):
@@ -76,19 +78,19 @@ class ProductDetailSlugView(DetailView):
     # def get_context_data(self, *args, **kwargs):
     #     context = super(ProductDetailSlugView, self).get_context_data(*args,
     #                                                                   **kwargs)
-    #     # cart_obj, new_obj = Cart.objects.new_or_get(self.request)
-    #     # context['cart'] = cart_obj
+    #     cart_obj, new_obj = Cart.objects.new_or_get(self.request)
+    #     context['cart'] = cart_obj
     #     return context
 
     def get_object(self, *args, **kwargs):
         request = self.request
-        pk = self.kwargs.get('pk')
+        slug = self.kwargs.get('slug')
         try:
-            instance = ProductVariant.objects.get(pk=pk)
+            instance = ProductVariant.objects.get(slug=slug)
         except ProductVariant.DoesNotExist:
             raise Http404('Not found...')
         except ProductVariant.MultipleObjectsReturned:
-            qs = ProductVariant.objects.filter(pk=pk)
+            qs = ProductVariant.objects.filter(slug=slug)
             instance = qs.first()
         except Exception:
             raise Http404('Uhhmm')
@@ -97,9 +99,10 @@ class ProductDetailSlugView(DetailView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProductDetailSlugView, self).get_context_data(*args, **kwargs)
-        pk = self.kwargs.get('pk')
+        # pk = self.kwargs.get('pk')
+        slug = self.kwargs.get('slug')
         qs = ProductVariant.objects.all()
-        this_instance = qs.filter(pk=pk)
+        this_instance = qs.filter(slug=slug)
         if this_instance.count() < 1:
             raise Http404('Not found!')
         instance = this_instance.first()
@@ -109,56 +112,14 @@ class ProductDetailSlugView(DetailView):
         sizes = qs.filter(product=instance.product).filter(color=instance.color)
         imgs = instance.get_imgs()
 
+        cart_obj, new_obj = Cart.objects.new_or_get(self.request)
+        context['cart'] = cart_obj
+
         context['imgs'] = imgs
         context['colors'] = colors
         context['sizes'] = sizes
-        context['pk'] = pk
+        # context['pk'] = pk
         return context
-
-
-# class ProductDownloadView(View):
-#     def get(self, request, *args, **kwargs):
-#         slug = kwargs.get('slug')
-#         pk = kwargs.get('pk')
-#         downloads_qs = ProductFile.objects.filter(pk=pk, product__slug=slug)
-#         if downloads_qs.count() != 1:
-#             raise Http404('Download not found!')
-#         download_obj = downloads_qs.first()
-#
-#         can_download = False
-#         user_ready = True
-#         if download_obj.user_required:
-#             if not request.user.is_authenticated:
-#                 user_ready = False
-#         purchased_products = Product.objects.none()
-#         if download_obj.free:
-#             can_download = True
-#             user_ready = True
-#         else:
-#             purchased_products = ProductPurchase.objects.products_by_request(request)
-#             if download_obj.product in purchased_products:
-#                 can_download = True
-#         if not can_download or not user_ready:
-#             messages.error(request, "You do not have permission to download this item!")
-#             return redirect(download_obj.get_default_url())
-#
-#         file_root = settings.PROTECTED_ROOT
-#         filepath = download_obj.file.path
-#         final_filepath = os.path.join(file_root, filepath)
-#         filename = download_obj.display_name
-#         final_filename = download_obj.get_filename(filepath, filename)
-#
-#         with open(final_filepath, 'rb') as f:
-#             wrapper = FileWrapper(f)
-#             mimetype = 'application/force-download'
-#             guess_mimetype = guess_type(filepath)[0]
-#             if guess_mimetype:
-#                 mimetype = guess_mimetype
-#                 response = HttpResponse(wrapper, content_type=mimetype)
-#                 response['Content-Disposition'] = 'attachment;filename={}'.format(final_filename)
-#                 response['X-SendFile'] = str(final_filename)
-#
-#             return response
 
 
 class ProductDetailView(DetailView):
