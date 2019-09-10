@@ -8,88 +8,97 @@
 
   <section class="ftco-section ftco-cart">
   <div class="container">
-    <div class="row">
-      <div class="col-md-12 ftco-animate">
-        <div class="cart-list">
-          <table class="table cart-table">
-            <thead class="thead-primary">
-              <tr class="text-center">
-                <th>No.</th>
-                <th>&nbsp;</th>
-                <th colspan="2">Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for item in cart.items.all %}
-              <tr class="text-center">
-                <td scope="row">{{ forloop.counter }}</td>
+    {% if cart.get_cart_count > 0 %}
+      <div class="row">
+        <div class="col-md-12 ftco-animate">
+          <div class="cart-list">
+            <table class="table cart-table">
+              <thead class="thead-primary">
+                <tr class="text-center">
+                  <th>No.</th>
+                  <th>&nbsp;</th>
+                  <th colspan="2">Product</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in cart.items.all %}
+                <tr class="text-center">
+                  <td scope="row">{{ forloop.counter }}</td>
 
-                <td class="product-remove"><a href="{{ item.product.get_remove_item_url }}"><span class="ion-ios-close"></span></a></td>
+                  <td class="product-remove"><a href="{{ item.product.get_remove_from_cart_url }}"><span class="ion-ios-close"></span></a></td>
 
-                <td class="image-prod"><div class="img" style="background-image:url({{ item.product.get_main_img.image.url }}); width:120px; height:128px;"></div></td>
+                  <td class="image-prod"><div class="img" style="background-image:url({{ item.product.get_main_img.image.url }}); width:120px; height:128px;"></div></td>
 
-                <td class="product-name">
-                  <h3><a href="{{ item.product.get_absolute_url }}">{{ item.product.title }}</a></h3>
-                </td>
+                  <td class="product-name">
+                    <h3><a href="{{ item.product.get_absolute_url }}">{{ item.product.title }}</a></h3>
+                  </td>
 
-                <td class="price">{% if item.product.product.discount_percent %}<span class="mr-2 price-dc" style="color: #bbb;"><del>${{ item.product.product.price }}</del></span>{% endif %}${{ item.product.product.discount_price|floatformat:2 }}</td>
+                  <td class="price">{% if item.product.product.discount_percent %}<span class="mr-2 price-dc" style="color: #bbb;"><del>${{ item.product.product.price }}</del></span>{% endif %}${{ item.product.product.discount_price|floatformat:2 }}</td>
 
-                <td class="quantity">
-                  <div class="input-group mb-3">
-                    <span class="input-group-btn mr-2">
-                      	<a href="{{ item.product.get_remove_from_cart_url }}" class="quantity-left-minus btn"  data-type="minus" data-field="">
-                         <i class="ion-ios-remove"></i>
-                      	</a>
-                  		</span>
-                   	<input type="text" id="quantity" name="quantity" class="form-control input-number" value="{{ item.quantity }}" min="1" max="100">
-                   	<span class="input-group-btn ml-2">
-                      	<a href="{{ item.product.get_add_to_cart_url }}" class="quantity-right-plus btn" data-type="plus" data-field="">
-                           <i class="ion-ios-add"></i>
-                       </a>
-                   	</span>
-                  </div>
-                </td>
+                  <td class="quantity">
+                    <div class="input-group mb-3">
+                      <span class="input-group-btn mr-2">
+                        	<a href="{{ item.product.get_decrease_cart_url }}" class="quantity-left-minus btn"  data-type="minus" data-field="">
+                           <i class="ion-ios-remove"></i>
+                        	</a>
+                    		</span>
+                     	<input type="text" id="quantity" name="quantity" class="form-control input-number" value="{{ item.quantity }}" min="1" max="100">
+                     	<span class="input-group-btn ml-2">
+                        	<a href="{{ item.product.get_increase_cart_url }}" class="quantity-right-plus btn" data-type="plus" data-field="">
+                             <i class="ion-ios-add"></i>
+                         </a>
+                     	</span>
+                    </div>
+                  </td>
 
-                <td class="total">${{ item.subtotal|floatformat:2 }}</td>
-              </tr><!-- END TR-->
-              {% endfor %}
+                  <td class="total">${{ item.subtotal|floatformat:2 }}</td>
+                </tr><!-- END TR-->
+                {% endfor %}
 
-            </tbody>
-          </table>
-          <div class="cart-item-remove-form" style='display:none'>
-            {% include 'carts/snippets/remove.html' %}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-    </div>
-    <div class="row justify-content-center">
-      <div class="col col-lg-5 col-md-6 mt-5 cart-wrap ftco-animate">
-        <div class="cart-total mb-3">
-					<h3>Cart Totals</h3>
-					<p class="d-flex">
-						<span>Subtotal</span>
-						<span>$20.60</span>
-					</p>
-					<p class="d-flex">
-						<span>Delivery</span>
-						<span>$0.00</span>
-					</p>
-					<p class="d-flex">
-						<span>Discount</span>
-						<span>$3.00</span>
-					</p>
-					<hr>
-					<p class="d-flex total-price">
-						<span>Total</span>
-						<span>${{ cart.total|floatformat:2 }}</span>
-					</p>
-				</div>
-        <p class="text-center"><a href="checkout.html" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
+      <div class="row justify-content-center">
+        <div class="col col-lg-5 col-md-6 mt-5 cart-wrap ftco-animate">
+          <div class="cart-total mb-3">
+  					<h3>Cart Totals</h3>
+  					<p class="d-flex">
+  						<span>Subtotal</span>
+  						<span>$20.60</span>
+  					</p>
+  					<p class="d-flex">
+  						<span>Delivery</span>
+  						<span>$0.00</span>
+  					</p>
+  					<p class="d-flex">
+  						<span>Discount</span>
+  						<span>$3.00</span>
+  					</p>
+  					<hr>
+  					<p class="d-flex total-price">
+  						<span>Total</span>
+  						<span>${{ cart.total|floatformat:2 }}</span>
+  					</p>
+  				</div>
+          <p class="text-center"><a href="checkout.html" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
+        </div>
       </div>
-    </div>
+    {% else %}
+      <div class="row justify-content-center">
+        <div class="col col-lg-5 col-md-6 cart-wrap ftco-animate">
+          <div class="cart-total justify-content-center mb-3">
+              <h3 class="text-center">Your bag is empty!</h3>
+          </div>
+          <p class="text-center"><a href="{% url 'products:list' %}" class="btn btn-primary py-3 px-4">Continue shopping</a></p>
+        </div>
+      </div>
+      <!-- <p class="lead">Your bag is empty!</p> -->
+    {% endif %}
   </div>
   </section>
 

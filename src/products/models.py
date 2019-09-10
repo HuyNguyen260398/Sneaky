@@ -236,13 +236,16 @@ class ProductVariant(models.Model):
         return reverse('products:detail', kwargs={'slug': self.slug})
 
     def get_add_to_cart_url(self):
-        return reverse('cart:add-to-cart', kwargs={'slug': self.slug})
+        return reverse('cart:add-to-cart')
 
     def get_remove_from_cart_url(self):
         return reverse('cart:remove_from_cart', kwargs={'slug': self.slug})
 
-    def get_remove_item_url(self):
-        return reverse('cart:remove_item', kwargs={'slug': self.slug})
+    def get_increase_cart_url(self):
+        return reverse('cart:increase_cart', kwargs={'slug': self.slug})
+
+    def get_decrease_cart_url(self):
+        return reverse('cart:decrease_cart', kwargs={'slug': self.slug})
 
     def get_imgs(self):
         qs = self.productimage_set.all()

@@ -88,125 +88,87 @@ $(document).ready(function(){
   }
 
   // Cart + Add Products
-  var productForm = $('.form-product-ajax')
 
-  function getOwnedProduct(productId, submitSpan){
-    var actionEndpoint = '/orders/endpoint/verify/ownership/'
-    var httpMethod = 'GET'
-    var data = {
-      product_id: productId
-    }
+  $('#add-cart-btn').click(function(event){
 
-    $.ajax({
-      url: actionEndpoint,
-      method: httpMethod,
-      data: data,
-      success: function(data){
-        console.log(data)
-        if (data.owner){
-          submitSpan.html("<a class='btn btn-warning' href='/library/'>In Library</a>")
-        }
-      },
-      error: function(error){
-        console.log(error)
-      }
-    })
-  }
-
-  $.each(productForm, function(index, object){
-    var $this = $(this)
-    var isUser = $this.attr('data-user')
-    var submitSpan = $this.find('.submit-span')
-    var productInput = $this.find("[name='product_id']")
-    var productId = productInput.attr('value')
-    var productIsDigital = productInput.attr('data-is-digital')
-
-    if (productIsDigital && isUser){
-      var isOwned = getOwnedProduct(productId, submitSpan)
-    }
-  })
-
-  productForm.submit(function(event){
     event.preventDefault()
-    var thisForm = $(this)
-    var actionEndpoint = thisForm.attr('data-endpoint')
-    var httpMethod = thisForm.attr('method')
-    var formData = thisForm.serialize()
+    var actionEndpoint = $(this).attr('data-endpoint')
+    var productId = $(this).attr('data-product')
+    var colorId = $(this).attr('data-color')
+    var sizeId = $('input[name=product-size]:checked').val()
 
-    $.ajax({
-      url: actionEndpoint,
-      method: httpMethod,
-      data: formData,
-      success: function(data){
-        var submitSpan = thisForm.find(".submit-span")
-        var navbarCount = $(".navbar-cart-count")
-
-        if (data.added){
-          submitSpan.html("<div class='btn-group'><a class='btn btn-danger' href='/cart/'>In cart </a><button type='submit' class='btn btn-danger'><i class='fas fa-trash'></i> Remove</button></div>")
-          navbarCount.html("<i class='fas fa-shopping-cart'></i> (" + data.cartItemCount + ")")
-        } else {
-          submitSpan.html("<button type='submit' class='btn btn-success'><i class='fas fa-cart-plus'></i> Add to cart</button>")
-          if (data.cartItemCount > 0){
-            navbarCount.html("<i class='fas fa-shopping-cart'></i> (" + data.cartItemCount + ")")
-          } else {
-            navbarCount.html("<i class='fas fa-shopping-cart'></i> ")
-          }
+    if(!sizeId){
+      alert('please choose a size')
+    }else{
+      // alert(productId + " " + colorId + " " + sizeId)
+      $.ajax({
+        url: actionEndpoint,
+        method: "POST",
+        data: {
+          product_id: productId,
+          color_id: colorId,
+          size_id: sizeId,
+        },
+        success: function(data){
+          var navbarCount = $(".navbar-cart-count")
+          navbarCount.html("<i class='fas fa-shopping-bag'></i> [" + data.cartItemCount + "]")
+          alert('success')
+        },
+        error: function(error){
+          alert(error)
         }
-
-        var currentPath = window.location.href
-        if (currentPath.indexOf('cart') != -1){
-          refreshCart()
-        }
-      },
-      error: function(data){
-        $.alert({
-          title: "Oops!",
-          content: "An error has occurred!",
-          theme: "modern",
-        })
-      }
-    })
+      })
+    }
   })
 
-  function refreshCart(){
-    var cartTable = $('.cart-table')
-    var cartBody = cartTable.find('.cart-body')
-    var productRows = cartBody.find('.cart-product')
-    var currentUrl = window.location.href
-
-    var refreshCartUrl = '/api/cart/'
-    var refreshCartMethod = 'GET'
-
-    $.ajax({
-      url: refreshCartUrl,
-      method: refreshCartMethod,
-      data: {},
-      success: function(data){
-        console.log(data)
-        var hiddenCartItemRemoveForm = $('.cart-item-remove-form')
-        if (data.products.length > 0){
-          productRows.html(" ")
-          i = data.products.length
-          $.each(data.products, function(index, value){
-            var newCartItemRemove = hiddenCartItemRemoveForm.clone()
-            newCartItemRemove.css('display', 'block')
-            newCartItemRemove.find('.cart-item-product-id').val(value.id)
-            cartBody.prepend("<tr><th scope='row'>" + i + "</th><td><a href='" + value.url + "'>" + value.name + "</a></td><td><i class='fas fa-dollar-sign'></i> " + value.price + "</td><td>" + newCartItemRemove.html() + "</td></tr>")
-            i--
-          })
-          cartBody.find('.cart-subtotal').text(data.subtotal)
-          cartBody.find('.cart-total').text(data.total)
-        } else {
-          window.location.href = currentUrl
-        }
-      },
-      error: function(errorData){
-        $.alert({
-          title: "Oops!",
-          content: "An error has occurred!",
-          theme: "modern",
-        })
-      }
-    })
-  }
+//   function refreshCart(){
+//     var cartTable = $('.cart-table')
+//     var cartBody = cartTable.find('.cart-body')
+//     var productRows = cartBody.find('.cart-product')
+//     var currentUrl = window.location.href
+//
+//     var refreshCartUrl = '/api/cart/'
+//     var refreshCartMethod = 'GET'
+//
+//     $.ajax({
+//       url: refreshCartUrl,
+//       method: refreshCartMethod,
+//       data: {},
+//       success: function(data){
+//         console.log(data)
+//         var hiddenCartItemRemoveForm = $('.cart-item-remove-form')
+//         if (data.products.length > 0){
+//           productRows.html(" ")
+//           i = data.products.length
+//           $.each(data.products, function(index, value){
+//             var newCartItemRemove = hiddenCartItemRemoveForm.clone()
+//             newCartItemRemove.css('display', 'block')
+//             newCartItemRemove.find('.cart-item-product-id').val(value.id)
+//
+//             itemIndex = "<tr><th scope='row'>" + i + "</th>"
+//             itemRemove = "<td class='product-remove'>" + newCartItemRemove.html() + "</td>"
+//             itemImage = "<td class='image-prod'><div class='img' style='background-image:url(" +  value.image + ");'></div></td>"
+//             itemName = "<td class='product-name'><h3>" + value.name + "</h3></td>"
+//             itemPrice = "<td class='price'>$" + value.price + "</td>"
+//             itemQuantity = "<td class='quantity'><div class='input-group mb-3'><input type='text' name='quantity' class='quantity form-control input-number' value='1' min='1' max='100'></div></td>"
+//             itemTotal = "<td class='total'>$4.90</td></tr>"
+//
+//             cartBody.prepend(itemIndex, itemRemove, itemImage, itemName, itemPrice, itemQuantity, itemTotal)
+//             i--
+//           })
+//           cartBody.find('.cart-subtotal').text(data.subtotal)
+//           cartBody.find('.cart-total').text(data.total)
+//         } else {
+//           window.location.href = currentUrl
+//         }
+//       },
+//       error: function(errorData){
+//         $.alert({
+//           title: "Oops!!!!",
+//           content: errorData,
+//           theme: "modern",
+//         })
+//       }
+//     })
+//   }
 })

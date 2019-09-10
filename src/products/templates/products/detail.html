@@ -79,15 +79,14 @@
           <div class="row">
             <div class="btn-group-toggle" data-toggle="buttons">
               {% for variant in sizes %}
-                <label class="btn btn-outline-dark mx-2  {% if forloop.first %}active{% endif %}">
-                  <input type="radio" name="options" id="{{ variant.size }}" autocomplete="off"> {{ variant.size }}
+                <label class="btn btn-outline-dark mx-2">
+                  <input type="radio" name="product-size" id="{{ variant.size }}" autocomplete="off" value="{{ variant.size.id }}"> {{ variant.size }}
                 </label>
               {% endfor %}
             </div>
           </div>
           <hr/>
   				<div class="row">
-
   					<div class="w-100"></div>
   					<div class="input-group col-md-6 d-flex mb-3">
              	<span class="input-group-btn mr-2">
@@ -107,7 +106,7 @@
           		<p style="color: #000;">80 piece available</p>
           	</div>
         	</div>
-        	<p><a href="{{ object.get_add_to_cart_url }}" class="btn btn-black py-3 px-5">Add to Bag</a></p>
+          <p><a href="#" data-endpoint='{{ object.get_add_to_cart_url }}' data-product='{{ object.product.id }}' data-color='{{ object.color.id }}' class="btn btn-black py-3 px-5" id="add-cart-btn">Add to Bag</a></p>
 
   		</div>
   	</div>

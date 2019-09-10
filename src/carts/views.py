@@ -63,11 +63,48 @@ def cart_update(request):
     return redirect('cart:home')
 
 
-def add_to_cart(request, slug):
+def add_to_cart(request):
+    product_id = request.POST.get('product_id')
+    color_id = request.POST.get('color_id')
+    size_id = request.POST.get('size_id')
+
+    # product = get_object_or_404(ProductVariant, slug=product_slug)
+    product = ProductVariant.objects.get(
+        product__id=product_id, color__id=color_id, size__id=size_id)
+    if product is not None:
+        cart, new_cart = Cart.objects.new_or_get(request)
+        item_qs = cart.items.filter(product__slug=product.slug)
+        if item_qs.exists():
+            cart_item = item_qs[0]
+            cart_item.quantity += 1
+            cart_item.save()
+        else:
+            cart_item = CartItem.objects.create(product=product)
+            cart.items.add(cart_item)
+
+        if request.is_ajax():
+            json_data = {
+                'cartItemCount': cart.get_cart_count(),
+            }
+            return JsonResponse(json_data, status=200)
+    return redirect('cart:home')
+
+
+def remove_from_cart(request, slug):
     product = get_object_or_404(ProductVariant, slug=slug)
     if product is not None:
         cart, new_cart = Cart.objects.new_or_get(request)
-        # cart_item, new_item = CartItem.objects.get_or_create(product=product)
+        item_qs = cart.items.filter(product__slug=product.slug)
+        if item_qs.exists():
+            cart_item = item_qs[0]
+            cart.items.remove(cart_item)
+    return redirect('cart:home')
+
+
+def increase_cart(request, slug):
+    product = get_object_or_404(ProductVariant, slug=slug)
+    if product is not None:
+        cart, new_cart = Cart.objects.new_or_get(request)
         item_qs = cart.items.filter(product__slug=product.slug)
         if item_qs.exists():
             cart_item = item_qs[0]
@@ -79,7 +116,7 @@ def add_to_cart(request, slug):
     return redirect('cart:home')
 
 
-def remove_from_cart(request, slug):
+def decrease_cart(request, slug):
     product = get_object_or_404(ProductVariant, slug=slug)
     if product is not None:
         cart, new_cart = Cart.objects.new_or_get(request)
@@ -91,17 +128,6 @@ def remove_from_cart(request, slug):
                 cart_item.save()
             else:
                 cart.items.remove(cart_item)
-    return redirect('cart:home')
-
-
-def remove_item_from_cart(request, slug):
-    product = get_object_or_404(ProductVariant, slug=slug)
-    if product is not None:
-        cart, new_cart = Cart.objects.new_or_get(request)
-        item_qs = cart.items.filter(product__slug=product.slug)
-        if item_qs.exists():
-            cart_item = item_qs[0]
-            cart.items.remove(cart_item)
     return redirect('cart:home')
 
 

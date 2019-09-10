@@ -9,9 +9,3 @@ register = template.Library()
 def cart_item_count(request):
     cart, new_cart = Cart.objects.new_or_get(request)
     return cart.get_cart_count()
-
-
-# @register.filter
-# def cart_total(request):
-#     cart, new_cart = Cart.objects.new_or_get(request)
-#     return cart.get_total
