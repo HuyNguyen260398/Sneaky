@@ -1,23 +1,23 @@
+import stripe
+
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from accounts.forms import LoginForm, GuestForm
-# from addresses.forms import AddressForm
+from addresses.forms import AddressForm
 
 from accounts.models import GuestEmail
-# from addresses.models import Address
-# from billing.models import BillingProfile
+from addresses.models import Address
+from billing.models import BillingProfile
 from products.models import Product, ProductVariant
-# from orders.models import Order
+from orders.models import Order
 from .models import Cart, CartItem
 
-# import stripe
+STRIPE_SEC_KEY = getattr(settings, "STRIPE_SEC_KEY", "sk_test_L2UkxaY9kJLqL3veVS0fCuLv00uVo6w8I4")
+STRIPE_PUB_KEY = getattr(settings, "STRIPE_PUB_KEY", "pk_test_8hljcboVHoSIRIswWFCEwlIY00Xdsw19Ue")
 
-# STRIPE_SEC_KEY = getattr(settings, "STRIPE_SEC_KEY", "sk_test_L2UkxaY9kJLqL3veVS0fCuLv00uVo6w8I4")
-# STRIPE_PUB_KEY = getattr(settings, "STRIPE_PUB_KEY", "pk_test_8hljcboVHoSIRIswWFCEwlIY00Xdsw19Ue")
-
-# stripe.api_key = STRIPE_SEC_KEY
+stripe.api_key = STRIPE_SEC_KEY
 
 
 def cart_detail_api_view(request):
