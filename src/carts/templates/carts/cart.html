@@ -33,7 +33,7 @@
                   <td class="image-prod"><div class="img" style="background-image:url({{ item.product.get_main_img.image.url }}); width:120px; height:128px;"></div></td>
 
                   <td class="product-name">
-                    <h3><a href="{{ item.product.get_absolute_url }}">{{ item.product.title }}</a></h3>
+                    <h3><a href="{{ item.product.get_absolute_url }}"><p>{{ item.product.product.title }}<br/>Color: {{ item.product.color.title }}<br/>Size: {{ item.product.size.title }}</p></a></h3>
                   </td>
 
                   <td class="price">{% if item.product.product.discount_percent %}<span class="mr-2 price-dc" style="color: #bbb;"><del>${{ item.product.product.price }}</del></span>{% endif %}${{ item.product.product.discount_price|floatformat:2 }}</td>

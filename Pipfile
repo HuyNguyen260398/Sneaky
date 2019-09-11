@@ -14,6 +14,7 @@ psycopg2 = "*"
 gunicorn = "*"
 dj-database-url = "*"
 pillow = "*"
+stripe = "*"
 
 [requires]
 python_version = "3.7"

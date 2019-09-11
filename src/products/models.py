@@ -232,8 +232,14 @@ class ProductVariant(models.Model):
     def __str__(self):
         return "{i}-{p}-{c}-{s}".format(i=self.id, p=self.product.id, c=self.color.title, s=self.size.title)
 
+    @property
+    def display_title(self):
+        return "{p}-{c}-{s}".format(p=self.product.title, c=self.color.title, s=self.size.title)
+
     def get_absolute_url(self):
-        return reverse('products:detail', kwargs={'slug': self.slug})
+        first_variant = ProductVariant.objects.filter(
+            product=self.product).filter(color=self.color)[0]
+        return reverse('products:detail', kwargs={'slug': first_variant.slug})
 
     def get_add_to_cart_url(self):
         return reverse('cart:add-to-cart')
