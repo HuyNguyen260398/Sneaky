@@ -1,3 +1,4 @@
+from django_countries.fields import CountryField
 from django.db import models
 
 from billing.models import BillingProfile
@@ -11,27 +12,21 @@ ADDRESS_TYPES = (
 
 class Address(models.Model):
     billing_profile = models.ForeignKey(BillingProfile, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=120)
-    last_name = models.CharField(max_length=120)
-    phone = models.CharField(max_length=120)
-    email = models.CharField(max_length=120)
     address_type = models.CharField(max_length=120, choices=ADDRESS_TYPES)
-    address_line_1 = models.CharField(max_length=120)
-    address_line_2 = models.CharField(max_length=120, null=True, blank=True)
-    country = models.CharField(max_length=120, default='Viet Nam')
+    country = CountryField(multiple=False)
+    zip = models.CharField(max_length=120)
     city = models.CharField(max_length=120)
-    state = models.CharField(max_length=120)
-    postal_code = models.CharField(max_length=120)
+    street_address = models.CharField(max_length=120)
+    appartment_addresss = models.CharField(max_length=120)
 
     def __str__(self):
         return str(self.billing_profile)
 
     def get_address(self):
-        return "{line1}\n{line2}\n{city}\n{state}, {postal}\n{country}".format(
-            line1=self.address_line_1,
-            line2=self.address_line_2 or "",
+        return "{country}\n{zip}\n{city}\n{street_address}\n{appartment_address}".format(
+            country=self.country,
+            zip=self.zip,
             city=self.city,
-            state=self.state,
-            postal=self.postal_code,
-            country=self.country
+            street_address=self.street_address,
+            appartment_address=self.appartment_addresss
         )

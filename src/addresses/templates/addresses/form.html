@@ -1,0 +1,68 @@
+    <form method="POST" action="{% if action_url %}{{ action_url }}{% else %}{% url "login" %}{% endif %}" class="billing-form">{% csrf_token %}
+      {% if next_url %}
+        <input type='hidden' name='next' value='{{ next_url }}' />
+      {% endif %}
+
+      {% if address_type %}
+        <input type='hidden' name='address_type' value='{{ address_type }}' />
+      {% endif %}
+
+      <h3 class="mb-4 billing-heading">
+        {% if address_type == "billing" %}
+          Billing Details
+        {% else %}
+          Shipping Details
+        {% endif %}
+      </h3>
+      <div class="row align-items-end">
+        <div class="w-100"></div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="country">State / Country</label>
+            <div class="select-wrap">
+              <!-- <div class="icon"><span class="ion-ios-arrow-down"></span></div> -->
+              {{ form.country }}
+            </div>
+          </div>
+        </div>
+        <div class="w-100"></div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="streetaddress">Street Address</label>
+            <!-- <input type="text" class="form-control" placeholder="House number and street name"> -->
+            {{ form.street_address }}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <!-- <input type="text" class="form-control" placeholder="Appartment, suite, unit etc: (optional)"> -->
+            {{ form.appartment_address }}
+          </div>
+        </div>
+        <div class="w-100"></div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="towncity">Town / City</label>
+            <!-- <input type="text" class="form-control" placeholder=""> -->
+            {{ form.city }}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="postcodezip">Postcode / ZIP *</label>
+            <!-- <input type="text" class="form-control" placeholder=""> -->
+            {{ form.zip }}
+          </div>
+        </div>
+        <div class="w-100"></div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="form-group">
+          <div class="col-md-12 justify-content-center">
+            <button type="submit" class="btn btn-primary py-3 px-4 mx-auto">Place an order</button>
+            <!-- <p><a href="#"class="btn btn-primary py-3 px-4">Place an order</a></p> -->
+          </div>
+        </div>
+      </div>
+
+    </form><!-- END -->

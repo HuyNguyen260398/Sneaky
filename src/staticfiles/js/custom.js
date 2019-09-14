@@ -98,7 +98,22 @@ $(document).ready(function(){
     var sizeId = $('input[name=product-size]:checked').val()
 
     if(!sizeId){
-      alert('please choose a size')
+      $.confirm({
+          title: 'Oops!',
+          content: 'Please choose your size!',
+          type: 'orange',
+          typeAnimated: true,
+          buttons: {
+              tryAgain: {
+                  text: 'OK',
+                  btnClass: 'btn-orange',
+                  action: function(){
+                  }
+              },
+              close: function () {
+              }
+          }
+      });
     }else{
       // alert(productId + " " + colorId + " " + sizeId)
       $.ajax({
@@ -112,7 +127,23 @@ $(document).ready(function(){
         success: function(data){
           var navbarCount = $(".navbar-cart-count")
           navbarCount.html("<i class='fas fa-shopping-bag'></i> [" + data.cartItemCount + "]")
-          alert('success')
+          // alert('success')
+          $.confirm({
+              title: 'Success!',
+              content: 'Item added to your bag!',
+              type: 'green',
+              typeAnimated: true,
+              buttons: {
+                  tryAgain: {
+                      text: 'OK',
+                      btnClass: 'btn-green',
+                      action: function(){
+                      }
+                  },
+                  close: function () {
+                  }
+              }
+          });
         },
         error: function(error){
           alert(error)

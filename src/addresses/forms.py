@@ -1,22 +1,28 @@
 from django import forms
+from django_countries.fields import CountryField
+from django_countries.widgets import CountrySelectWidget
 
 from .models import Address
 
 
 class AddressForm(forms.ModelForm):
+    country = CountryField(blank_label='(select country)').formfield(
+        widget=CountrySelectWidget(attrs={'class': 'form-control'}))
+    zip = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': ''}))
+    city = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': ''}))
+    street_address = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'House number and street name'}))
+    appartment_address = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Appartment, suite, unit etc: (optional)'}))
+
     class Meta:
         model = Address
         fields = [
-            # 'billing_profile',
-            # 'address_type',
-            'first_name',
-            'last_name',
-            'phone',
-            'email',
-            'address_line_1',
-            'address_line_2',
             'country',
+            'zip',
             'city',
-            'state',
-            'postal_code'
+            'street_address',
+            'appartment_address',
         ]

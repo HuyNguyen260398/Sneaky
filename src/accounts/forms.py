@@ -77,7 +77,9 @@ class UserAdminChangeForm(forms.ModelForm):
 
 
 class GuestForm(forms.ModelForm):
-    # email = forms.EmailField()
+    email = forms.EmailField(label='Email', widget=forms.TextInput(
+        attrs={'class': 'form-control', 'type': 'text', 'placeholder': 'Your Email'}))
+
     class Meta:
         model = GuestEmail
         fields = [
@@ -99,8 +101,10 @@ class GuestForm(forms.ModelForm):
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(label='Email',widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'text', 'placeholder': 'Your Email'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Your Password'}))
+    email = forms.EmailField(label='Email', widget=forms.TextInput(
+        attrs={'class': 'form-control', 'type': 'text', 'placeholder': 'Your Email'}))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': 'form-control', 'placeholder': 'Your Password'}))
 
     def __init__(self, request, *args, **kwargs):
         self.request = request
@@ -148,10 +152,14 @@ class LoginForm(forms.Form):
 
 
 class RegisterForm(forms.ModelForm):
-    full_name = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your Fullname'}))
-    email = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your Email'}))
-    password1 = forms.CharField(label="Password", widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Your Password'}))
-    password2 = forms.CharField(label="Password Confirmation", widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm Your Password'}))
+    full_name = forms.CharField(required=False, widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Your Fullname'}))
+    email = forms.CharField(required=False, widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Your Email'}))
+    password1 = forms.CharField(label="Password", widget=forms.PasswordInput(
+        attrs={'class': 'form-control', 'placeholder': 'Your Password'}))
+    password2 = forms.CharField(label="Password Confirmation", widget=forms.PasswordInput(
+        attrs={'class': 'form-control', 'placeholder': 'Confirm Your Password'}))
 
     class Meta:
         model = User

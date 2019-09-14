@@ -19,11 +19,16 @@
 <script src="{% static 'js/google-map.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
 
+<!-- Stripe JS -->
+<script src="https://js.stripe.com/v3/"></script>
+<script src='{% static "js/stripe.js" %}'></script>
+
 <!-- Jquery Confirm -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.js"></script>
 
 <!-- JS Render -->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.4/jsrender.min.js'></script>
+{% include 'base/js-templates.html' %}
 
 <!-- Django Secure AJAX JS -->
 <script src='{% static "js/csrf.ajax.js" %}'></script>

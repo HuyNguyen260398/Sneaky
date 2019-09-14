@@ -22,12 +22,13 @@ from django.urls import path, re_path, include
 from django.views.generic import TemplateView, RedirectView
 
 from accounts.views import LoginView, RegisterView, GuestRegisterView
+from addresses.views import checkout_address_create_view, checkout_address_reuse_view
+from billing.views import payment_method_view, payment_method_create_view
 from carts.views import cart_detail_api_view
 
 from .views import home_page, about_page, contact_page
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('', home_page, name='home'),
     path('about/', about_page, name='about'),
     path('accounts/login/', RedirectView.as_view(url='/login')),
@@ -35,8 +36,14 @@ urlpatterns = [
     path('accounts/', RedirectView.as_view(url='/account')),
     path('accounts/', include('accounts.passwords.urls')),
     path('account/', include('accounts.urls')),
+    path('admin/', admin.site.urls),
     path('api/cart/', cart_detail_api_view, name='api_cart'),
+    path('billing/payment-method/', payment_method_view, name='billing-payment-method'),
+    path('billing/payment-method/create/', payment_method_create_view,
+         name='billing-payment-method-endpoint'),
     path('cart/', include('carts.urls')),
+    path('checkout/address/create/', checkout_address_create_view, name='checkout_address_create'),
+    path('checkout/address/reuse/', checkout_address_reuse_view, name='checkout_address_reuse'),
     path('contact/', contact_page, name='contact'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),

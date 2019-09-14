@@ -15,6 +15,7 @@ gunicorn = "*"
 dj-database-url = "*"
 pillow = "*"
 stripe = "*"
+django-countries = "*"
 
 [requires]
 python_version = "3.7"

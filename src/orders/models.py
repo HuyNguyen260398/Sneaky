@@ -2,6 +2,7 @@ import datetime
 import math
 
 from django.conf import settings
+from django_countries.fields import CountryField
 from django.db import models
 from django.db.models import Count, Sum, Avg
 from django.db.models.signals import pre_save, post_save
@@ -13,6 +14,9 @@ from billing.models import BillingProfile
 from carts.models import Cart
 from products.models import Product
 from sneaky.utils import unique_order_id_generator
+
+
+User = settings.AUTH_USER_MODEL
 
 
 ORDER_STATUS_CHOICES = (
@@ -122,6 +126,8 @@ class Order(models.Model):
         Address, related_name='shipping_address', null=True, blank=True, on_delete=models.CASCADE,)
     billing_address = models.ForeignKey(
         Address, related_name='billing_address', null=True, blank=True, on_delete=models.CASCADE,)
+    # billing_address = models.ForeignKey(
+    #     'BillingAddress', on_delete=models.SET_NULL, blank=True, null=True)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE,)
     status = models.CharField(max_length=120,
                               default='created',
@@ -231,6 +237,15 @@ def post_save_order(sender, instance, created, *args, **kwargs):
 
 
 post_save.connect(post_save_order, sender=Order)
+
+
+class BillingAddress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    country = CountryField(multiple=False)
+    zip = models.CharField(max_length=120)
+    city = models.CharField(max_length=120)
+    street_address = models.CharField(max_length=120)
+    appartment_addresss = models.CharField(max_length=120)
 
 
 class ProductPurchaseQuerySet(models.query.QuerySet):
