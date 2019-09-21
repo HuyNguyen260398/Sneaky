@@ -102,9 +102,11 @@ class GuestForm(forms.ModelForm):
 
 class LoginForm(forms.Form):
     email = forms.EmailField(label='Email', widget=forms.TextInput(
-        attrs={'class': 'form-control', 'type': 'text', 'placeholder': 'Your Email'}))
+        # attrs={'class': 'form-control', 'type': 'text', 'placeholder': 'Your Email'}))
+        attrs={'class': 'form-control', 'type': 'text'}))
     password = forms.CharField(widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder': 'Your Password'}))
+        # attrs={'class': 'form-control', 'placeholder': 'Your Password'}))
+        attrs={'class': 'form-control'}))
 
     def __init__(self, request, *args, **kwargs):
         self.request = request
@@ -113,6 +115,7 @@ class LoginForm(forms.Form):
     def clean(self):
         request = self.request
         data = self.cleaned_data
+        # data = super(LoginForm, self).clean()
         email = data.get('email')
         password = data.get('password')
 
@@ -141,6 +144,9 @@ class LoginForm(forms.Form):
         user = authenticate(request, username=email, password=password)
         if user is None:
             raise forms.ValidationError("Invalid Credentials!")
+            # msg = "Invalid Credentials!"
+            # self.add_error('email', msg)
+            # self.add_error('password', msg)
         login(request, user)
         self.user = user
         user_logged_in_signal.send(user.__class__, instance=user, request=request)
@@ -152,14 +158,14 @@ class LoginForm(forms.Form):
 
 
 class RegisterForm(forms.ModelForm):
-    full_name = forms.CharField(required=False, widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Your Fullname'}))
-    email = forms.CharField(required=False, widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Your Email'}))
+    full_name = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control'}))
+    email = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control'}))
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder': 'Your Password'}))
+        attrs={'class': 'form-control'}))
     password2 = forms.CharField(label="Password Confirmation", widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder': 'Confirm Your Password'}))
+        attrs={'class': 'form-control'}))
 
     class Meta:
         model = User

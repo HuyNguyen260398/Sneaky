@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
@@ -52,7 +53,7 @@
               <div class="form-group">
                 <label class="label-control"><h1>Register</h1></label>
               </div>
-              <div class="form-group">
+              <!-- <div class="form-group">
                 {{ form.full_name }}
               </div>
               <div class="form-group">
@@ -63,7 +64,8 @@
               </div>
               <div class="form-group">
                 {{ form.password2 }}
-              </div>
+              </div> -->
+              {{ form|crispy }}
               <div class="form-group">
                 <input type="submit" value="Register Me!" class="btn btn-primary py-3 px-5">
               </div>

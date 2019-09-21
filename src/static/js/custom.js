@@ -1,6 +1,6 @@
 $(document).ready(function(){
   // Contact Form Handler
-  var contactForm = $('.contact-form')
+  var contactForm = $('.my-contact-form')
   var contactFormMethod = contactForm.attr('method')
   var contactFormEndpoint = contactForm.attr('action')
 
@@ -88,9 +88,7 @@ $(document).ready(function(){
   }
 
   // Cart + Add Products
-
   $('#add-cart-btn').click(function(event){
-
     event.preventDefault()
     var actionEndpoint = $(this).attr('data-endpoint')
     var productId = $(this).attr('data-product')
@@ -109,8 +107,6 @@ $(document).ready(function(){
                   btnClass: 'btn-orange',
                   action: function(){
                   }
-              },
-              close: function () {
               }
           }
       });
@@ -135,12 +131,10 @@ $(document).ready(function(){
               typeAnimated: true,
               buttons: {
                   tryAgain: {
-                      text: 'OK',
+                      text: 'Continue Shopping',
                       btnClass: 'btn-green',
                       action: function(){
                       }
-                  },
-                  close: function () {
                   }
               }
           });

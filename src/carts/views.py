@@ -47,11 +47,13 @@ def add_to_cart(request):
     size_id = request.POST.get('size_id')
 
     # product = get_object_or_404(ProductVariant, slug=product_slug)
-    product = ProductVariant.objects.get(
+    product_qs = ProductVariant.objects.filter(
         product__id=product_id, color__id=color_id, size__id=size_id)
-    if product is not None:
+    if product_qs.exists():
+        product = product_qs.first()
         cart, new_cart = Cart.objects.new_or_get(request)
-        item_qs = cart.items.filter(product__slug=product.slug)
+
+        item_qs = cart.items.filter(product__id=product.id)
         if item_qs.exists():
             cart_item = item_qs[0]
             cart_item.quantity += 1

@@ -106,7 +106,7 @@
           		<p style="color: #000;">80 piece available</p>
           	</div>
         	</div>
-          <p><a href="#" data-endpoint='{{ object.get_add_to_cart_url }}' data-product='{{ object.product.id }}' data-color='{{ object.color.id }}' class="btn btn-black py-3 px-5" id="add-cart-btn">Add to Bag</a></p>
+          <p><a href="#" data-endpoint='{{ object.get_add_to_cart_url }}' data-product='{{ object.product.id }}' data-color='{{ object.color.id }}' class="btn btn-black py-3 px-5" id="add-cart-btn">{% csrf_token %}Add to Bag</a></p>
 
   		</div>
   	</div>

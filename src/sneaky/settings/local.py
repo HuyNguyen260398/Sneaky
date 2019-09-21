@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'billing',
     'carts',
     'compressor',
+    'crispy_forms',
     'orders',
     'products',
     'search',
@@ -198,3 +199,5 @@ MANAGERS = (
     ('Admin', 'prj.ecom.pydj@gmail.com'),
 )
 ADMINS = MANAGERS
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
