@@ -78,7 +78,7 @@ class UserAdminChangeForm(forms.ModelForm):
 
 class GuestForm(forms.ModelForm):
     email = forms.EmailField(label='Email', widget=forms.TextInput(
-        attrs={'class': 'form-control', 'type': 'text', 'placeholder': 'Your Email'}))
+        attrs={'class': 'form-control', 'type': 'text'}))
 
     class Meta:
         model = GuestEmail

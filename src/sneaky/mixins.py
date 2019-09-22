@@ -13,8 +13,8 @@ class NextUrlMixin(object):
 
     def get_next_url(self):
         request = self.request
-        next_ = request.GET.get('next')
-        next_post = request.POST.get('next')
+        next_ = request.GET.get('next', '/')
+        next_post = request.POST.get('next', '/')
         redirect_path = next_ or next_post or None
 
         if is_safe_url(redirect_path, request.get_host()):

@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
@@ -77,21 +78,21 @@ class AccountEmailActivateView(FormMixin, View):
 
 class GuestRegisterView(NextUrlMixin, RequestFormAttachMixin, CreateView):
     form_class = GuestForm
-    default_next = '/register/'
+    # default_next = '/register/'
 
     def get_success_url(self):
         return self.get_next_url()
 
     def form_invalid(self, form):
-        return redirect(self.default_next)
+        next_path = self.get_next_url()
+        return redirect(next_path)
 
 
 class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
     form_class = LoginForm
     template_name = 'accounts/login.html'
-    success_url = '/'
-    default_next = '/'
-
+    # success_url = '/'
+    # default_next = '/'
 
     def form_valid(self, form):
         next_path = self.get_next_url()
