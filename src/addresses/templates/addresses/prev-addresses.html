@@ -1,6 +1,6 @@
 {% if address_qs.exists %}
 
-  <form action="{{ action_url }}" method="POST">{% csrf_token %}
+  <form action="{{ action_url }}" method="POST" class="billing-form">{% csrf_token %}
 
     {% if next_url %}
       <input type='hidden' name='next' value='{{ next_url }}' />
@@ -10,15 +10,30 @@
       <input type='hidden' name='address_type' value='{{ address_type }}' />
     {% endif %}
 
-    {% for address in address_qs %}
-      <label for="address-{{ address.id }}">
-        <input type="radio" name="shipping_address" value="{{ address.id }}" id="address-{{ address.id }}">
-        {{ address.address_line_1 }}
-      </label>
-      <br/>
-    {% endfor %}
+    <h3 class="mb-4 billing-heading">
+      Use Previous Address
+    </h3>
 
-    <button type="submit" class="btn btn-success">Use Address</button>
+    <div class="form-group">
+  		<label for="country">Previous Addresses</label>
+  		<div class="select-wrap">
+        <select name="shipping_address" id="" class="form-control">
+          <option selected="selected" disabled>Select Old Addresses</option>
+          {% for address in address_qs %}
+            <option value="{{ address.id }}">{{ address.get_address }}</option>
+          {% endfor %}
+        </select>
+      </div>
+  	</div>
+
+    <div class="row justify-content-center">
+      <div class="form-group">
+        <div class="col-md-12 justify-content-center">
+          <button type="submit" class="btn btn-primary py-3 px-4 mx-auto">Use Address</button>
+        </div>
+      </div>
+    </div>
+
   </form>
 
 {% endif %}

@@ -17,7 +17,7 @@ class Address(models.Model):
     zip = models.CharField(max_length=120)
     city = models.CharField(max_length=120)
     street_address = models.CharField(max_length=120)
-    appartment_addresss = models.CharField(max_length=120)
+    appartment_address = models.CharField(max_length=120)
 
     def __str__(self):
         return str(self.billing_profile)
@@ -28,5 +28,5 @@ class Address(models.Model):
             zip=self.zip,
             city=self.city,
             street_address=self.street_address,
-            appartment_address=self.appartment_addresss
+            appartment_address=self.appartment_address
         )

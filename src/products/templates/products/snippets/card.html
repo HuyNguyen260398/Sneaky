@@ -1,6 +1,7 @@
 <div class="col-sm-6 col-md-6 col-lg-4 ftco-animate">
 	<div class="product">
-		<a href="{{ instance.get_absolute_url }}" class="img-prod"><img class="img-fluid" src="{{ instance.get_first_variant_img.image.url }}" alt="Colorlib Template">
+		<a href="{{ instance.get_absolute_url }}" class="img-prod">
+			<img class="img-fluid" src="{{ instance.get_first_variant_img.image.url }}" alt="Colorlib Template">
 			{% if instance.discount_percent %}
 				<span class="status">{{ instance.discount_percent }}%</span>
 			{% endif %}

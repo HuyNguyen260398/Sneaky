@@ -11,8 +11,8 @@ from django.utils import timezone
 
 from addresses.models import Address
 from billing.models import BillingProfile
-from carts.models import Cart
-from products.models import Product
+from carts.models import Cart, CartItem
+from products.models import Product, ProductVariant
 from sneaky.utils import unique_order_id_generator
 
 
@@ -170,12 +170,12 @@ class Order(models.Model):
         return new_total
 
     def check_done(self):
-        shipping_address_required = not self.cart.is_digital
+        # shipping_address_required = not self.cart.is_digital
         shipping_done = False
 
-        if shipping_address_required and self.shipping_address:
+        if self.shipping_address:
             shipping_done = True
-        elif shipping_address_required and not self.shipping_address:
+        elif not self.shipping_address:
             shipping_done = False
         else:
             shipping_done = True
@@ -189,10 +189,10 @@ class Order(models.Model):
         return False
 
     def update_purchases(self):
-        for p in self.cart.products.all():
+        for p in self.cart.items.all():
             obj, created = ProductPurchase.objects.get_or_create(
                 order_id=self.order_id,
-                product=p,
+                product=p.product,
                 billing_profile=self.billing_profile
             )
         return ProductPurchase.objects.filter(order_id=self.order_id).count()
@@ -287,7 +287,7 @@ class ProductPurchaseManager(models.Manager):
 class ProductPurchase(models.Model):
     order_id = models.CharField(max_length=120)
     billing_profile = models.ForeignKey(BillingProfile, on_delete=models.CASCADE,)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE,)
+    product = models.ForeignKey(ProductVariant, on_delete=models.CASCADE,)
     refunded = models.BooleanField(default=False)
     updated = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)
