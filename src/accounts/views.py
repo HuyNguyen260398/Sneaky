@@ -83,14 +83,6 @@ class GuestRegisterView(NextUrlMixin, RequestFormAttachMixin, CreateView):
     def get_success_url(self):
         return(self.get_next_url())
 
-    # def form_valid(self, form):
-        # next_path = self.get_next_url()
-        # return redirect(next_path)
-
-    def form_invalid(self, form):
-        next_path = self.get_next_url()
-        return redirect(next_path)
-
 
 class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
     form_class = LoginForm

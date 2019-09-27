@@ -12,7 +12,7 @@ from accounts.models import GuestEmail
 from addresses.models import Address
 from billing.models import BillingProfile
 from products.models import Product, ProductVariant
-from orders.models import Order, BillingAddress
+from orders.models import Order
 
 from .forms import CheckoutForm
 from .models import Cart, CartItem
@@ -155,6 +155,7 @@ def checkout_home(request):
 
     login_form = LoginForm(request=request)
     guest_form = GuestForm(request=request)
+    # print(request)
     address_form = AddressForm()
     shipping_address_id = request.session.get('shipping_address_id', None)
     billing_address_id = request.session.get('billing_address_id', None)

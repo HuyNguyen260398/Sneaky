@@ -239,15 +239,6 @@ def post_save_order(sender, instance, created, *args, **kwargs):
 post_save.connect(post_save_order, sender=Order)
 
 
-class BillingAddress(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    country = CountryField(multiple=False)
-    zip = models.CharField(max_length=120)
-    city = models.CharField(max_length=120)
-    street_address = models.CharField(max_length=120)
-    appartment_addresss = models.CharField(max_length=120)
-
-
 class ProductPurchaseQuerySet(models.query.QuerySet):
     def active(self):
         return self.filter(refunded=False)

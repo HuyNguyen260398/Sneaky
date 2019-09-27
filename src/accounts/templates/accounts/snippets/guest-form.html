@@ -3,6 +3,7 @@
 <form action='{% if action_url %}{{ action_url }}{% else %}{% url "login" %}{% endif %}' class="bg-white p-5 contact-form" method='POST'> {% csrf_token %}
   {% if next_url %}
     <input type='hidden' name='next' value='{{ next_url }}' />
+    <p>{{ next_url }}</p>
   {% endif %}
 
   <div class="form-group">
