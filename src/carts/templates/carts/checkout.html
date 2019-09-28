@@ -60,9 +60,22 @@
         </div>
       </section>
 
+    {% elif not object.payment_option %}
+
+      <section class="ftco-section">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-xl-8 ftco-animate">
+              {% url "billing-payment-option-select" as payment_option_select %}
+              {% include 'orders/payment-option.html' with form=payment_form next_url=request.build.absolute_uri action_url=payment_option_select %}
+            </div> <!-- .col-md-8 -->
+          </div>
+        </div>
+      </section>
+
     {% else %}
 
-      {% if not has_card %}
+      {% if payment_option == "Stripe" and not has_card %}
 
         <section class="ftco-section">
           <div class="container">
@@ -76,213 +89,190 @@
 
       {% else %}
 
-      <section class="ftco-section">
-        <div class="container">
-          <div class="row">
-            <div class="col-xl-6 ftco-animate">
-              <div class="container">
-                <div class="row">
-                  <div class="col-xl-12 mb-5">
-                    <form action="#" class="billing-form">
-                      <h3 class="mb-4 billing-heading">Shipping Address</h3>
-                      <div class="row align-items-end border rounded">
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="country">State / Country</label><br/>
-                            <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.shipping_address.country }}" disabled>
+        <section class="ftco-section">
+          <div class="container">
+            <div class="row">
+              <div class="col-xl-6 ftco-animate">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-xl-12 mb-5">
+                      <form action="#" class="billing-form">
+                        <h3 class="mb-4 billing-heading">Shipping Address</h3>
+                        <div class="row align-items-end border rounded">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              <label for="country">State / Country</label><br/>
+                              <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.shipping_address.country }}" disabled>
+                            </div>
+                          </div>
+                          <div class="w-100"></div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="streetaddress">Street Address</label><br/>
+                              <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.shipping_address.street_address }}" disabled>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="appartmentaddress">Appartment Address</label><br/>
+                              <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.shipping_address.appartment_address }}" disabled>
+                            </div>
+                          </div>
+                          <div class="w-100"></div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="towncity">Town / City</label><br/>
+                              <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.shipping_address.city }}" disabled>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="postcodezip">Postcode / ZIP *</label><br/>
+                              <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.shipping_address.zip }}" disabled>
+                            </div>
                           </div>
                         </div>
-                        <div class="w-100"></div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="streetaddress">Street Address</label><br/>
-                            <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.shipping_address.street_address }}" disabled>
+                      </form><!-- END -->
+                    </div>
+                    <br/>
+                    <div class="col-xl-12 mb-5">
+                      <form action="#" class="billing-form">
+                        <h3 class="mb-4 billing-heading">Billing Address</h3>
+                        <div class="row align-items-end border rounded">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              <label for="country">State / Country</label><br/>
+                              <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.billing_address.country }}" disabled>
+                            </div>
+                          </div>
+                          <div class="w-100"></div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="streetaddress">Street Address</label><br/>
+                              <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.billing_address.street_address }}" disabled>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="appartmentaddress">Appartment Address</label><br/>
+                              <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.billing_address.appartment_address }}" disabled>
+                            </div>
+                          </div>
+                          <div class="w-100"></div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="towncity">Town / City</label><br/>
+                              <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.billing_address.city }}" disabled>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="postcodezip">Postcode / ZIP *</label><br/>
+                              <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.billing_address.zip }}" disabled>
+                            </div>
                           </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="appartmentaddress">Appartment Address</label><br/>
-                            <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.shipping_address.appartment_address }}" disabled>
-                          </div>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="towncity">Town / City</label><br/>
-                            <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.shipping_address.city }}" disabled>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="postcodezip">Postcode / ZIP *</label><br/>
-                            <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.shipping_address.zip }}" disabled>
-                          </div>
-                        </div>
-                      </div>
-                    </form><!-- END -->
-                  </div>
-                  <br/>
-                  <div class="col-xl-12 mb-5">
-                    <form action="#" class="billing-form">
-                      <h3 class="mb-4 billing-heading">Billing Address</h3>
-                      <div class="row align-items-end border rounded">
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="country">State / Country</label><br/>
-                            <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.billing_address.country }}" disabled>
-                          </div>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="streetaddress">Street Address</label><br/>
-                            <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.billing_address.street_address }}" disabled>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="appartmentaddress">Appartment Address</label><br/>
-                            <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.billing_address.appartment_address }}" disabled>
-                          </div>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="towncity">Town / City</label><br/>
-                            <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.billing_address.city }}" disabled>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="postcodezip">Postcode / ZIP *</label><br/>
-                            <input type="text" style="border:none; border-bottom:1px solid black; background-color:white" placeholder="{{ object.billing_address.zip }}" disabled>
-                          </div>
-                        </div>
-                      </div>
-                    </form><!-- END -->
+                      </form><!-- END -->
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div class="col-xl-6 ftco-animate">
-              <div class="container">
-                <div class="row">
-                  <div class="col-xl-12 mb-5">
-                    <div class="cart-detail cart-total bg-light p-3 p-md-4">
-                      <h3 class="billing-heading mb-4">Cart Total</h3>
-                      <div class="container-fluid">
-                        {% for item in object.cart.items.all %}
-                        <div class="row mb-3">
-                          <div class="col-4">
-                            <!-- <img src="{{ item.product.get_main_img.image.url }}" style="width:100px; height:100px;"></img> -->
-                            <div class="product">
-                          		<a href="#" class="img-prod">
-                                <img class="img-fluid" src="{{ item.product.get_main_img.image.url }}" alt="Colorlib Template">
-                          			<span class="status">{{ item.quantity }}</span>
-                          			<div class="overlay"></div>
-                          		</a>
-                          	</div>
+              <div class="col-xl-6 ftco-animate">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-xl-12 mb-5">
+                      <div class="cart-detail cart-total bg-light p-3 p-md-4">
+                        <h3 class="billing-heading mb-4">Cart Total</h3>
+                        <div class="container-fluid">
+                          {% for item in object.cart.items.all %}
+                          <div class="row mb-3">
+                            <div class="col-4">
+                              <!-- <img src="{{ item.product.get_main_img.image.url }}" style="width:100px; height:100px;"></img> -->
+                              <div class="product">
+                            		<a href="#" class="img-prod">
+                                  <img class="img-fluid" src="{{ item.product.get_main_img.image.url }}" alt="Colorlib Template">
+                            			<span class="status">{{ item.quantity }}</span>
+                            			<div class="overlay"></div>
+                            		</a>
+                            	</div>
+                            </div>
+                            <div class="col-4">
+                              {{ item.product.product.title }}<br/>Color: {{ item.product.color.title }}<br/>Size: {{ item.product.size.title }}</span>
+                            </div>
+                            <div class="col-4 text-center">
+                              ${{ item.subtotal|floatformat:2 }}
+                            </div>
                           </div>
-                          <div class="col-4">
-                            {{ item.product.product.title }}<br/>Color: {{ item.product.color.title }}<br/>Size: {{ item.product.size.title }}</span>
-                          </div>
-                          <div class="col-4 text-center">
-                            ${{ item.subtotal|floatformat:2 }}
-                          </div>
-                        </div>
-                        {% endfor %}
-                        <hr/>
-                        <div class="row mb-3">
-                          <div class="col-4">
-                            Cart Total
-                          </div>
-                          <div class="col-4">
+                          {% endfor %}
+                          <hr/>
+                          <div class="row mb-3">
+                            <div class="col-4">
+                              Cart Total
+                            </div>
+                            <div class="col-4">
 
+                            </div>
+                            <div class="col-4 text-center">
+                              ${{ object.cart.total|floatformat:2 }}
+                            </div>
                           </div>
-                          <div class="col-4 text-center">
-                            ${{ object.cart.total|floatformat:2 }}
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <div class="col-4">
-                            Delivery
-                          </div>
-                          <div class="col-4">
+                          <div class="row mb-3">
+                            <div class="col-4">
+                              Delivery
+                            </div>
+                            <div class="col-4">
 
+                            </div>
+                            <div class="col-4 text-center">
+                              ${{ object.shipping_total|floatformat:2 }}
+                            </div>
                           </div>
-                          <div class="col-4 text-center">
-                            ${{ object.shipping_total|floatformat:2 }}
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <div class="col-4">
-                            Discount
-                          </div>
-                          <div class="col-4">
+                          <div class="row mb-3">
+                            <div class="col-4">
+                              Discount
+                            </div>
+                            <div class="col-4">
 
+                            </div>
+                            <div class="col-4 text-center">
+                              $3.00
+                            </div>
                           </div>
-                          <div class="col-4 text-center">
-                            $3.00
-                          </div>
-                        </div>
-                        <hr/>
-                        <div class="row mb-3">
-                          <div class="col-4">
-                            TOTAL
-                          </div>
-                          <div class="col-4">
+                          <hr/>
+                          <div class="row mb-3">
+                            <div class="col-4">
+                              TOTAL
+                            </div>
+                            <div class="col-4">
 
-                          </div>
-                          <div class="col-4 text-center">
-                            ${{ object.total|floatformat:2 }}
+                            </div>
+                            <div class="col-4 text-center">
+                              ${{ object.total|floatformat:2 }}
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-xl-12">
-                    <div class="cart-detail bg-light p-3 p-md-4">
-                      <h3 class="billing-heading mb-4">Payment Method</h3>
-                      <div class="form-group">
-                        <div class="col-md-12">
-                          <div class="radio">
-                             <label><input type="radio" name="optradio" class="mr-2"> Direct Bank Tranfer</label>
+                    <div class="col-xl-12">
+                      <div class="cart-detail bg-light p-3 p-md-4">
+                        <h3 class="billing-heading mb-4">Payment Method</h3>
+                        <div class="form-group">
+                          <div class="col-md-12">
+                               <label>{{ object.payment_option }}</label>
                           </div>
                         </div>
+                        <form class="form" action="" method="POST">{% csrf_token %}
+                          <button type="submit" class="btn btn-primary py-3 px-4">Place an order</button>
+                        </form>
                       </div>
-                      <div class="form-group">
-                        <div class="col-md-12">
-                          <div class="radio">
-                             <label><input type="radio" name="optradio" class="mr-2"> Check Payment</label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <div class="col-md-12">
-                          <div class="radio">
-                             <label><input type="radio" name="optradio" class="mr-2"> Paypal</label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <div class="col-md-12">
-                          <div class="checkbox">
-                             <label><input type="checkbox" value="" class="mr-2"> I have read and accept the terms and conditions</label>
-                          </div>
-                        </div>
-                      </div>
-                      <form class="form" action="" method="POST">{% csrf_token %}
-                        <button type="submit" class="btn btn-primary py-3 px-4">Place an order</button>
-                      </form>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section> <!-- .section -->
+        </section> <!-- .section -->
 
       {% endif %}
 

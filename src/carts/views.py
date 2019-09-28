@@ -7,6 +7,7 @@ from django.views import View
 
 from accounts.forms import LoginForm, GuestForm
 from addresses.forms import AddressForm
+from orders.forms import PaymentForm
 
 from accounts.models import GuestEmail
 from addresses.models import Address
@@ -111,42 +112,6 @@ def decrease_cart(request, slug):
     return redirect('cart:home')
 
 
-class CheckoutView(View):
-    def get(self, *args, **kwargs):
-        form = CheckoutForm()
-        context = {
-            'form': form
-        }
-        return render(self.request, "carts/checkout.html", context)
-
-    def post(self, *args, **kwargs):
-        form = CheckoutForm(self.request.POST or None)
-        if form.is_valid():
-            country = form.cleaned_data.get('country')
-            zip = form.cleaned_data.get('zip')
-            city = form.cleaned_data.get('city')
-            street_address = form.cleaned_data.get('street_address')
-            appartment_address = form.cleaned_data.get('appartment_address')
-            same_billing_address = form.cleaned_data.get('same_billing_address')
-            save_info = form.cleaned_data.get('save_info')
-            payment_option = form.cleaned_data.get('payment_option')
-
-            billing_address = BillingAddress(
-                user=self.request.user,
-                country=country,
-                zip=zip,
-                city=city,
-                street_address=street_address,
-                appartment_address=appartment_address,
-                same_billing_address=same_billing_address,
-                save_info=save_info,
-                payment_option=payment_option,
-            )
-            billing_address.save()
-            return redirect('cart:checkout')
-        return redirect('cart:checkout')
-
-
 def checkout_home(request):
     cart_obj, cart_created = Cart.objects.new_or_get(request)
     order_obj = None
@@ -155,18 +120,19 @@ def checkout_home(request):
 
     login_form = LoginForm(request=request)
     guest_form = GuestForm(request=request)
-    # print(request)
     address_form = AddressForm()
+    payment_form = PaymentForm()
     shipping_address_id = request.session.get('shipping_address_id', None)
     billing_address_id = request.session.get('billing_address_id', None)
     # shipping_address_required = not cart_obj.is_digital
     address_qs = None
     has_card = False
+    payment_option = None
 
     billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
     if billing_profile is not None:
-        if request.user.is_authenticated:
-            address_qs = Address.objects.filter(billing_profile=billing_profile)
+        # if request.user.is_authenticated:
+        address_qs = Address.objects.filter(billing_profile=billing_profile)
         order_obj, order_obj_created = Order.objects.new_or_get(billing_profile, cart_obj)
         if shipping_address_id:
             order_obj.shipping_address = Address.objects.get(id=shipping_address_id)
@@ -177,6 +143,7 @@ def checkout_home(request):
         if shipping_address_id or billing_address_id:
             order_obj.save()
         has_card = billing_profile.has_card
+        payment_option = order_obj.payment_option
 
     if request.method == 'POST':
         is_prepared = order_obj.check_done()
@@ -198,8 +165,10 @@ def checkout_home(request):
         'login_form': login_form,
         'guest_form': guest_form,
         'address_form': address_form,
+        'payment_form': payment_form,
         'address_qs': address_qs,
         'has_card': has_card,
+        'payment_option': payment_option,
         'publish_key': STRIPE_PUB_KEY,
         # 'shipping_address_required': shipping_address_required,
     }

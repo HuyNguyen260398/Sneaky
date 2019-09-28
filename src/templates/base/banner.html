@@ -1,18 +1,21 @@
 {% load static %}
 {% load compress %}
 
-{% url 'home' as home_url %}
 {% url 'about' as about_url %}
-{% url 'contact' as contact_url %}
-{% url 'login' as login_url %}
-{% url 'logout' as logout_url %}
-{% url 'register' as register_url %}
 {% url 'account:home' as account_url %}
 {% url "account:user-update" as account_update_url %}
+{% url 'cart:checkout' as cart_checkout_url %}
+{% url 'cart:home' as cart_url %}
+{% url 'cart:success' as cart_success_url %}
+{% url 'contact' as contact_url %}
+{% url 'home' as home_url %}
+{% url 'login' as login_url %}
+{% url 'logout' as logout_url %}
 {% url 'products:list' as product_list_url %}
 {% url 'products:detail' as product_detail_url %}
+{% url 'register' as register_url %}
 {% url 'search:query' as search_url %}
-{% url 'cart:home' as cart_url %}
+
 
 <div class="hero-wrap hero-bread" style="background-image: url('{% static 'images/bg_6.jpg' %}');">
       <div class="container">
@@ -21,47 +24,55 @@
           	<p class="breadcrumbs">
               <span class="mr-2"><a href="{% url 'home' %}">Home</a></span>
               <span class="mr-2">/</span>
-              {% if request.path == about_url %}
-                <span>About</span>
-                </p>
-                <h1 class="mb-0 bread">About Us</h1>
-              {% elif request.path == contact_url %}
-                <span>Contact</span>
-                </p>
-                <h1 class="mb-0 bread">Contact Us</h1>
-              {% elif request.path == login_url %}
-                <span>Login</span>
-                </p>
-                <h1 class="mb-0 bread">Connect With Us</h1>
-              {% elif request.path == register_url %}
-                <span>Register</span>
-                </p>
-                <h1 class="mb-0 bread">Join Us</h1>
-              {% elif request.path == account_update_url %}
-                <span class="mr-2">Account</span>
-                <span class="mr-2">/</span>
-                <span>Details</span>
-                </p>
-                <h1 class="mb-0 bread">Update Your Account</h1>
-              {% elif request.path == product_list_url %}
-                <span>Shop</span>
-                </p>
-                <h1 class="mb-0 bread">Let's Shop!</h1>
-              {% elif request.path == search_url %}
-                <span>Search</span>
-                </p>
-                <h1 class="mb-0 bread">Results</h1>
-              {% elif request.path == cart_url %}
-                <span>Bag</span>
-                </p>
-                <h1 class="mb-0 bread">My Shopping Bag</h1>
-              {% else %}
-                <span class="mr-2">Product</span>
-                <span class="mr-2">/</span>
-                <span>Details</span>
-                </p>
-                <h1 class="mb-0 bread">Product Info</h1>
-              {% endif %}
+          {% if request.path == about_url %}
+              <span>About</span>
+            </p>
+            <h1 class="mb-0 bread">About Us</h1>
+          {% elif request.path == contact_url %}
+              <span>Contact</span>
+            </p>
+            <h1 class="mb-0 bread">Contact Us</h1>
+          {% elif request.path == login_url %}
+              <span>Login</span>
+            </p>
+            <h1 class="mb-0 bread">Connect With Us</h1>
+          {% elif request.path == register_url %}
+              <span>Register</span>
+            </p>
+            <h1 class="mb-0 bread">Join Us</h1>
+          {% elif request.path == account_update_url %}
+              <span class="mr-2">Account</span>
+              <span class="mr-2">/</span>
+              <span>Details</span>
+            </p>
+            <h1 class="mb-0 bread">Update Your Account</h1>
+          {% elif request.path == product_list_url %}
+              <span>Shop</span>
+            </p>
+            <h1 class="mb-0 bread">Let's Shop!</h1>
+          {% elif request.path == search_url %}
+              <span>Search</span>
+            </p>
+            <h1 class="mb-0 bread">Results</h1>
+          {% elif request.path == cart_url %}
+              <span>Shopping Bag</span>
+            </p>
+            <h1 class="mb-0 bread">My Shopping Bag</h1>
+          {% elif request.path == cart_checkout_url %}
+              <span>Checkout</span>
+            </p>
+            <h1 class="mb-0 bread">Finalize Checkout</h1>
+          {% elif request.path == cart_success_url %}
+              <span>Checkout</span>
+            </p>
+            <h1 class="mb-0 bread">Checkout Done</h1>
+          {% else %}
+              <span class="mr-2">Product</span>
+              <span class="mr-2">/</span>
+              <span>Details</span>
+            </p>
+            <h1 class="mb-0 bread">Product Info</h1>
+          {% endif %}
           </div>
         </div>
       </div>

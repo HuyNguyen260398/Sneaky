@@ -126,8 +126,6 @@ class Order(models.Model):
         Address, related_name='shipping_address', null=True, blank=True, on_delete=models.CASCADE,)
     billing_address = models.ForeignKey(
         Address, related_name='billing_address', null=True, blank=True, on_delete=models.CASCADE,)
-    # billing_address = models.ForeignKey(
-    #     'BillingAddress', on_delete=models.SET_NULL, blank=True, null=True)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE,)
     status = models.CharField(max_length=120,
                               default='created',
@@ -138,6 +136,7 @@ class Order(models.Model):
     total = models.DecimalField(default=0.00,
                                 max_digits=100,
                                 decimal_places=2)
+    payment_option = models.CharField(max_length=120, null=True, blank=True)
     active = models.BooleanField(default=True)
     updated = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)

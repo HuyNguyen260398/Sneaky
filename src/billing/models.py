@@ -46,7 +46,10 @@ class BillingProfile(models.Model):
         return self.email
 
     def charge(self, order_obj, card=None):
-        return Charge.objects.do(self, order_obj, card)
+        if order_obj.payment_option == "Stripe":
+            return Charge.objects.do(self, order_obj, card)
+        else:
+            return True, "Payment option accepted"
 
     def get_cards(self):
         return self.card_set.all()

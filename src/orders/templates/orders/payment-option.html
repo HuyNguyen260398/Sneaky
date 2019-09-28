@@ -1,0 +1,26 @@
+<form method="POST" action="{% if action_url %}{{ action_url }}{% else %}{% url 'login' %}{% endif %}" class="billing-form">{% csrf_token %}
+  {% if next_url %}
+    <input type='hidden' name='next' value='{{ next_url }}' />
+  {% endif %}
+
+  <h3 class="mb-4 billing-heading">Select your payment option</h3>
+
+  <div class="row align-items-end border rounded border-warning">
+    <div class="d-block m-3">
+      {% for value, name in form.fields.payment_option.choices %}
+        <div class="custom-control custom-radio">
+          <input id="{{ name }}" name="payment_option" value="{{ value }}" type="radio" class="custom-control-input" required>
+          <label class="custom-control-label" for="{{ name }}">{{ name }}</label>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <br/>
+  <div class="row justify-content-center">
+    <div class="form-group">
+      <div class="col-md-12 justify-content-center">
+        <button type="submit" class="btn btn-primary py-3 px-4 mx-auto">Continue</button>
+      </div>
+    </div>
+  </div>
+</form>

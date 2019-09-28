@@ -16,9 +16,9 @@
 
     <div class="form-group">
   		<label for="country">Previous Addresses</label>
-  		<div class="select-wrap">
+  		<div class="select-wrap border rounded">
         <select name="shipping_address" id="" class="form-control">
-          <option selected="selected" disabled>Select Old Addresses</option>
+          <option selected="selected" disabled>Select Addresses</option>
           {% for address in address_qs %}
             <option value="{{ address.id }}">{{ address.get_address }}</option>
           {% endfor %}
