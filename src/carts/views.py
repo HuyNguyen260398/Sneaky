@@ -15,8 +15,8 @@ from billing.models import BillingProfile
 from products.models import Product, ProductVariant
 from orders.models import Order
 
-from .forms import CheckoutForm
 from .models import Cart, CartItem
+from .forms import CheckoutForm
 
 STRIPE_SEC_KEY = getattr(settings, "STRIPE_SEC_KEY", "sk_test_L2UkxaY9kJLqL3veVS0fCuLv00uVo6w8I4")
 STRIPE_PUB_KEY = getattr(settings, "STRIPE_PUB_KEY", "pk_test_8hljcboVHoSIRIswWFCEwlIY00Xdsw19Ue")
@@ -47,7 +47,6 @@ def add_to_cart(request):
     color_id = request.POST.get('color_id')
     size_id = request.POST.get('size_id')
 
-    # product = get_object_or_404(ProductVariant, slug=product_slug)
     product_qs = ProductVariant.objects.filter(
         product__id=product_id, color__id=color_id, size__id=size_id)
     if product_qs.exists():
@@ -124,14 +123,13 @@ def checkout_home(request):
     payment_form = PaymentForm()
     shipping_address_id = request.session.get('shipping_address_id', None)
     billing_address_id = request.session.get('billing_address_id', None)
-    # shipping_address_required = not cart_obj.is_digital
     address_qs = None
     has_card = False
     payment_option = None
+    card = None
 
     billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
     if billing_profile is not None:
-        # if request.user.is_authenticated:
         address_qs = Address.objects.filter(billing_profile=billing_profile)
         order_obj, order_obj_created = Order.objects.new_or_get(billing_profile, cart_obj)
         if shipping_address_id:
@@ -143,6 +141,9 @@ def checkout_home(request):
         if shipping_address_id or billing_address_id:
             order_obj.save()
         has_card = billing_profile.has_card
+        if has_card:
+            card = billing_profile.default_card
+            print(card)
         payment_option = order_obj.payment_option
 
     if request.method == 'POST':
@@ -155,6 +156,7 @@ def checkout_home(request):
                 del request.session['cart_id']
                 if not billing_profile.user:
                     billing_profile.set_cards_inactive()
+                request.session['order_id'] = order_obj.order_id
                 return redirect('cart:success')
             else:
                 return redirect('cart:checkout')
@@ -168,12 +170,24 @@ def checkout_home(request):
         'payment_form': payment_form,
         'address_qs': address_qs,
         'has_card': has_card,
+        'card': card,
         'payment_option': payment_option,
         'publish_key': STRIPE_PUB_KEY,
-        # 'shipping_address_required': shipping_address_required,
     }
     return render(request, 'carts/checkout.html', context)
 
 
+def checkout(request):
+    form = CheckoutForm(request.POST or None)
+    context = {
+        'form': form
+    }
+    return render(request, 'carts/checkout2.html', context)
+
+
 def checkout_done_view(request):
-    return render(request, "carts/checkout-done.html", {})
+    order_id = request.session.get('order_id', None)
+    context = {
+        'order_id': order_id
+    }
+    return render(request, "carts/checkout-done.html", context)

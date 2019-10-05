@@ -25,6 +25,7 @@ from accounts.views import LoginView, RegisterView, GuestRegisterView
 from addresses.views import checkout_address_create_view, checkout_address_reuse_view
 from billing.views import payment_method_view, payment_method_create_view
 from carts.views import cart_detail_api_view
+from marketing.views import MarketingPreferenceUpdateView, MailchimpWebhookView
 from orders.views import payment_option_select
 
 from .views import home_page, about_page, contact_page
@@ -45,15 +46,18 @@ urlpatterns = [
     path('cart/', include('carts.urls')),
     path('checkout/address/create/', checkout_address_create_view, name='checkout_address_create'),
     path('checkout/address/reuse/', checkout_address_reuse_view, name='checkout_address_reuse'),
+    path('checkout/payment-option/', payment_option_select, name='billing-payment-option-select'),
     path('contact/', contact_page, name='contact'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('checkout/payment-option/', payment_option_select, name='billing-payment-option-select'),
+    path('orders/', include('orders.urls')),
     path('products/', include('products.urls')),
     path('register/', RegisterView.as_view(), name='register'),
     path('register/guest/', GuestRegisterView.as_view(), name='guest_register'),
     path('search/', include('search.urls')),
     path('settings/', RedirectView.as_view(url='/account')),
+    path('settings/email/', MarketingPreferenceUpdateView.as_view(), name='marketing-pref'),
+    path('webhooks/mailchimp/', MailchimpWebhookView.as_view(), name='webhooks-mailchimp'),
 ]
 
 if settings.DEBUG:

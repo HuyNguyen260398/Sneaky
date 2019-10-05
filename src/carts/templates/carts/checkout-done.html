@@ -11,7 +11,7 @@
             <form action="#" class="bg-white p-5 contact-form">
               <div class="form-group">
                 <h3 class="text-success">Thank you for your purchase!</h3>
-                <p>Your order number is: </p>
+                <p>Your order number is: <a href="/orders/{{ order_id }}">{{ order_id }}</a></p>
                 <p>Please check your email for order confirmation with details and tracking info.</p>
                 <div class="form-group">
                 <a href="{% url 'products:list' %}" class="btn btn-primary py-3 px-5">Continue Shopping</a>

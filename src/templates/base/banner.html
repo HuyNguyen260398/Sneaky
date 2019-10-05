@@ -11,10 +11,13 @@
 {% url 'home' as home_url %}
 {% url 'login' as login_url %}
 {% url 'logout' as logout_url %}
+{% url 'orders:list' as orders_list_url %}
+{% url 'orders:detail' as orders_detail_url %}
 {% url 'products:list' as product_list_url %}
 {% url 'products:detail' as product_detail_url %}
 {% url 'register' as register_url %}
 {% url 'search:query' as search_url %}
+{% url 'marketing-pref' as marketing_pref_url %}
 
 
 <div class="hero-wrap hero-bread" style="background-image: url('{% static 'images/bg_6.jpg' %}');">
@@ -66,6 +69,28 @@
               <span>Checkout</span>
             </p>
             <h1 class="mb-0 bread">Checkout Done</h1>
+          {% elif request.path == marketing_pref_url %}
+
+              <span class="mr-2">Account</span>
+              <span class="mr-2">/</span>
+              <span class="mr-2">Settings</span>
+              <span class="mr-2">/</span>
+              <span>Marketing Preference</span>
+            </p>
+            <h1 class="mb-0 bread">Email Preference</h1>
+          {% elif request.path == orders_list_url %}
+              <span>Orders</span>
+              <span class="mr-2">/</span>
+              <span class="mr-2">List</span>
+            </p>
+            <h1 class="mb-0 bread">My Orders</h1>
+          {% elif request.path == orders_detail_url %}
+              <span>Orders</span>
+              <span class="mr-2">/</span>
+              <span class="mr-2">Detail</span>
+              <span class="mr-2">{{ orders_detail_url }}</span>
+            </p>
+            <h1 class="mb-0 bread">Order Details</h1>
           {% else %}
               <span class="mr-2">Product</span>
               <span class="mr-2">/</span>

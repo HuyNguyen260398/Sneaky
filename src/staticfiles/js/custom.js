@@ -144,6 +144,32 @@ $(document).ready(function(){
         }
       })
     }
-  })
+  });
+
+  // Billing Option
+  $('input:radio[name="billing_option"]').change(function(){
+  // $('.bo').change(function(){
+      // var this = $(this)
+      var billingForm = $('#billing_form')
+
+      // if (this.value == 'different') {
+      //   // billingForm.removeAttr('hidden')
+      //   alert('different')
+      // }
+
+      // switch($(this).val()) {
+      //   case 'different' :
+      //       alert("different");
+      //       break;
+      //   case 'same' :
+      //       alert("same");
+      //       break;
+      // }
+
+      if (this.checked && this.value == 'different') {
+            alert("different");
+        }
+  });
+
 
 })

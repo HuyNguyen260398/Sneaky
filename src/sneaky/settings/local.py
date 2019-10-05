@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'carts',
     'compressor',
     'crispy_forms',
+    'marketing',
     'orders',
     'products',
     'search',
@@ -188,9 +189,9 @@ DEFAULT_FROM_EMAIL = 'Python eCommerce <prj.ecom.pydj@gmail.com>'
 BASE_URL = '127.0.0.1:8000'
 
 # MAILCHIMP_API_KEY = os.environ["MAILCHIMP_API_KEY"] # Use this when running server with heroku
-MAILCHIMP_API_KEY = os.environ.get("MAILCHIMP_API_KEY", "DEFAULT")
+MAILCHIMP_API_KEY = os.environ.get("MAILCHIMP_API_KEY", "026afa813150e4672a0783ad62cb4a21-us3")
 MAILCHIMP_DATA_CENTER = "us3"
-MAILCHIMP_EMAIL_LIST_ID = os.environ.get("MAILCHIMP_EMAIL_LIST_ID")
+MAILCHIMP_EMAIL_LIST_ID = os.environ.get("MAILCHIMP_EMAIL_LIST_ID", "f63ed0b189")
 
 STRIPE_SEC_KEY = os.environ.get("STRIPE_SEC_KEY", "sk_test_L2UkxaY9kJLqL3veVS0fCuLv00uVo6w8I4")
 STRIPE_PUB_KEY = os.environ.get("STRIPE_PUB_KEY", "pk_test_8hljcboVHoSIRIswWFCEwlIY00Xdsw19Ue")

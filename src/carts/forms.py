@@ -4,22 +4,26 @@ from django_countries.widgets import CountrySelectWidget
 
 
 PAYMENT_CHOICES = (
+    ('C', 'COD'),
+    ('B', 'Bank Transfer'),
     ('S', 'Stripe'),
-    ('P', 'Paypal')
+    ('P', 'PayPal')
 )
 
 
 class CheckoutForm(forms.Form):
-    # firstname = forms.CharField(widget=forms.TextInput(
-    #     attrs={'class': 'form-control', 'placeholder': ''}))
-    # lastname = forms.CharField(widget=forms.TextInput(
-    #     attrs={'class': 'form-control', 'placeholder': ''}))
-    country = CountryField(blank_label='(select country)').formfield(
+    full_name = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Full name'}))
+    email = forms.EmailField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Email'}))
+    phone = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Phone'}))
+    country = CountryField(blank_label='(Select Country)').formfield(
         widget=CountrySelectWidget(attrs={'class': 'form-control'}))
     zip = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': ''}))
+        attrs={'class': 'form-control', 'placeholder': 'Zip'}))
     city = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': ''}))
+        attrs={'class': 'form-control', 'placeholder': 'City'}))
     street_address = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'House number and street name'}))
     appartment_address = forms.CharField(widget=forms.TextInput(

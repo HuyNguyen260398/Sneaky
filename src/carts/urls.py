@@ -8,6 +8,7 @@ from .views import (
     decrease_cart,
     checkout_home,
     checkout_done_view,
+    checkout,
 )
 
 app_name = 'cart'
@@ -19,5 +20,6 @@ urlpatterns = [
     path('increase_cart/<slug:slug>/', increase_cart, name='increase_cart'),
     path('decrease_cart/<slug:slug>/', decrease_cart, name='decrease_cart'),
     path('checkout/', checkout_home, name='checkout'),
+    path('checkout2/', checkout, name='checkout2'),
     path('checkout/success/', checkout_done_view, name='success'),
 ]

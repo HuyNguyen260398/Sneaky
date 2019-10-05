@@ -33,19 +33,21 @@ class UserManager(BaseUserManager):
         user_obj.save(using=self._db)
         return user_obj
 
-    def create_staffuser(self, email, full_name=None, password=None):
+    def create_staffuser(self, email, full_name=None, phone=None, password=None):
         user = self.create_user(
             email,
             full_name=full_name,
+            phone=phone,
             password=password,
             is_staff=True
         )
         return user
 
-    def create_superuser(self, email, full_name=None, password=None):
+    def create_superuser(self, email, full_name=None, phone=None, password=None):
         user = self.create_user(
             email,
             full_name=full_name,
+            phone=phone,
             password=password,
             is_staff=True,
             is_admin=True
@@ -56,6 +58,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     email = models.EmailField(max_length=255, unique=True)
     full_name = models.CharField(max_length=255, blank=True, null=True)
+    phone = models.CharField(max_length=10, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
@@ -205,6 +208,9 @@ post_save.connect(post_save_user_create_receiver, sender=User)
 
 class GuestEmail(models.Model):
     email = models.EmailField()
+    first_name = models.CharField(max_length=120, null=True, blank=True)
+    last_name = models.CharField(max_length=120, null=True, blank=True)
+    phone = models.CharField(max_length=12, null=True, blank=True)
     active = models.BooleanField(default=True)
     update = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)

@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -78,7 +79,6 @@ class AccountEmailActivateView(FormMixin, View):
 
 class GuestRegisterView(NextUrlMixin, RequestFormAttachMixin, CreateView):
     form_class = GuestForm
-    # default_next = '/register/'
 
     def get_success_url(self):
         return(self.get_next_url())
@@ -101,9 +101,11 @@ class RegisterView(CreateView):
     success_url = '/login/'
 
 
-class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
+class UserDetailUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     form_class = UserDetailChangeForm
     template_name = 'accounts/detail-update-view.html'
+    success_url = '/account/details/'
+    success_message = 'Your profile have been updated!'
 
     def get_object(self):
         return self.request.user
@@ -113,5 +115,5 @@ class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
         context['title'] = 'Change Your Account Details'
         return context
 
-    def get_success_url(self):
-        return reverse('account:home')
+    # def get_success_url(self):
+    #     return reverse('account:user-update')

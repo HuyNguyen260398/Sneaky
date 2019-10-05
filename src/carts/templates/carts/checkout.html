@@ -7,7 +7,6 @@
   {% if not billing_profile %}
 
     <section class="ftco-section contact-section bg-light">
-      <p>{{ request.path|urlencode }} asdasdasdas</p>
       <div class="container">
         <div class="row block-9">
           <div class="col-md-5 d-flex">
@@ -255,12 +254,23 @@
                       </div>
                     </div>
                     <div class="col-xl-12">
-                      <div class="cart-detail bg-light p-3 p-md-4">
+                      <div class="cart-detail cart-total bg-light p-3 p-md-4">
                         <h3 class="billing-heading mb-4">Payment Method</h3>
                         <div class="form-group">
                           <div class="col-md-12">
-                               <label>{{ object.payment_option }}</label>
+                            <label><strong>{{ object.payment_option|upper }}</strong></label>
                           </div>
+                          {% if has_card %}
+                            <div class="col-md-12 border rounded">
+                                <label>Card Type: {{ card.brand }}</label><br/>
+                                <label>Card Number: **** **** **** {{ card.last4 }}</label><br/>
+                                <label>Country: {{ card.country }}</label><br/>
+                                <label>Exp: {{ card.exp_month }}/{{ card.exp_year }}</label>
+                            </div>
+                            <div class="col-md-12">
+                                <a href='{{ billing_profile.get_payment_method_url }}?next={{ request.path|urlencode }}'>Change My Card</a>
+                            </div>
+                          {% endif %}
                         </div>
                         <form class="form" action="" method="POST">{% csrf_token %}
                           <button type="submit" class="btn btn-primary py-3 px-4">Place an order</button>
@@ -272,7 +282,7 @@
               </div>
             </div>
           </div>
-        </section> <!-- .section -->
+        </section>
 
       {% endif %}
 
