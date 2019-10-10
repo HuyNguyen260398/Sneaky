@@ -275,7 +275,7 @@
                           <div class="col-md-12">
                             <label><strong>{{ object.payment_option|upper }}</strong></label>
                           </div>
-                          {% if has_card %}
+                          {% if has_card and object.payment_option == "Stripe" %}
                             <div class="col-md-12 border rounded">
                                 <label>Card Type: {{ card.brand }}</label><br/>
                                 <label>Card Number: **** **** **** {{ card.last4 }}</label><br/>

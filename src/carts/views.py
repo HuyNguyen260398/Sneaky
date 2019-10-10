@@ -143,7 +143,6 @@ def checkout_home(request):
         has_card = billing_profile.has_card
         if has_card:
             card = billing_profile.default_card
-            print(card)
         payment_option = order_obj.payment_option
 
     if request.method == 'POST':
