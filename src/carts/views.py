@@ -28,12 +28,12 @@ def cart_detail_api_view(request):
     cart_obj, new_obj = Cart.objects.new_or_get(request)
     products = [{
         'id': x.id,
-        'url': x.get_absolute_url(),
-        'image': x.get_main_img.image.url(),
+        # 'url': x.get_absolute_url(),
+        # 'image': x.get_main_img.image.url(),
         'name': x.product.title,
-        'price': x.product.price
-    } for x in cart_obj.products.all()]
-    cart_data = {'products': products, 'subtotal': cart_obj.subtotal, 'total': cart_obj.total}
+        # 'price': x.product.price
+    } for x in cart_obj.items.all()]
+    cart_data = {'products': products}
     return JsonResponse(cart_data)
 
 

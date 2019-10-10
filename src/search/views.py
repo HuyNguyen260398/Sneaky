@@ -1,10 +1,17 @@
 from django.views.generic import ListView
 
-from products.models import Product
+from products.models import (
+    Product,
+    ProductBrand,
+    ProductType,
+    ProductSize,
+    ProductColor
+)
 
 
 class SearchProducView(ListView):
     template_name = 'search/view.html'
+    paginate_by = 9
 
     def get_context_data(self, *args, **kwargs):
         context = super(SearchProducView, self).get_context_data(
@@ -12,7 +19,16 @@ class SearchProducView(ListView):
             **kwargs
         )
         query = self.request.GET.get('q')
+        product_brands = ProductBrand.objects.all()
+        product_types = ProductType.objects.all()
+        product_sizes = ProductSize.objects.all()
+        product_colors = ProductColor.objects.all()
+
         context['query'] = query
+        context['brands'] = product_brands
+        context['types'] = product_types
+        context['sizes'] = product_sizes
+        context['colors'] = product_colors
         return context
 
     def get_queryset(self, *args, **kwargs):

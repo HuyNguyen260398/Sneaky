@@ -82,6 +82,9 @@ class ProductQuerySet(models.QuerySet):
         )
         return self.filter(lookups).distinct()
 
+    # def filter(self, query):
+    #     return self.all()
+
 
 class ProductManager(models.Manager):
     def get_queryset(self):
@@ -119,7 +122,6 @@ class Product(models.Model):
     objects = ProductManager()
 
     def get_absolute_url(self):
-        # return '/products/{slug}/'.format(slug=self.slug)
         first_variant = self.get_first_variant()
         return reverse('products:detail', kwargs={'slug': first_variant.slug})
 

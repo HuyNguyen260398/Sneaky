@@ -15,12 +15,6 @@
 
     {% url 'home' as home_url %}
 
-    {% if request.path != home_url %}
-
-      {% include "base/banner.html" %}
-
-    {% endif %}
-
 		{% block content %}{% endblock %}
 
     {% include "base/footer.html" %}

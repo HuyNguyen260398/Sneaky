@@ -5,80 +5,106 @@
 
 {% block content %}
 
-<section class="ftco-section bg-light">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-8 col-lg-10 order-md-last">
-        <div class="row">
-            {% for obj in object_list %}
-                {% include "products/snippets/card.html" with instance=obj %}
-            {% endfor %}
-        </div>
-        <div class="row mt-5">
-          <div class="col text-center">
-            <div class="block-27">
-              <ul>
-                <li><a href="#">&lt;</a></li>
-                <li class="active"><span>1</span></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">&gt;</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4 col-lg-2 sidebar">
-        <div class="sidebar-box-2">
-          <h2 class="heading mb-4"><a href="#">Clothing</a></h2>
-          <ul>
-            <li><a href="#">Shirts &amp; Tops</a></li>
-            <li><a href="#">Dresses</a></li>
-            <li><a href="#">Shorts &amp; Skirts</a></li>
-            <li><a href="#">Jackets</a></li>
-            <li><a href="#">Coats</a></li>
-            <li><a href="#">Sleeveless</a></li>
-            <li><a href="#">Trousers</a></li>
-            <li><a href="#">Winter Coats</a></li>
-            <li><a href="#">Jumpsuits</a></li>
-          </ul>
-        </div>
-        <div class="sidebar-box-2">
-          <h2 class="heading mb-4"><a href="#">Jeans</a></h2>
-          <ul>
-            <li><a href="#">Shirts &amp; Tops</a></li>
-            <li><a href="#">Dresses</a></li>
-            <li><a href="#">Shorts &amp; Skirts</a></li>
-            <li><a href="#">Jackets</a></li>
-            <li><a href="#">Coats</a></li>
-            <li><a href="#">Jeans</a></li>
-            <li><a href="#">Sleeveless</a></li>
-            <li><a href="#">Trousers</a></li>
-            <li><a href="#">Winter Coats</a></li>
-            <li><a href="#">Jumpsuits</a></li>
-          </ul>
-        </div>
-        <div class="sidebar-box-2">
-          <h2 class="heading mb-2"><a href="#">Bags</a></h2>
-          <h2 class="heading mb-2"><a href="#">Accessories</a></h2>
-        </div>
-        <div class="sidebar-box-2">
-          <h2 class="heading mb-4"><a href="#">Shoes</a></h2>
-          <ul>
-            <li><a href="#">Nike</a></li>
-            <li><a href="#">Addidas</a></li>
-            <li><a href="#">Skechers</a></li>
-            <li><a href="#">Jackets</a></li>
-            <li><a href="#">Coats</a></li>
-            <li><a href="#">Jeans</a></li>
-          </ul>
+  <div class="hero-wrap hero-bread" style="background-image: url('{% static 'images/bg_6.jpg' %}');">
+    <div class="container">
+      <div class="row no-gutters slider-text align-items-center justify-content-center">
+        <div class="col-md-9 ftco-animate text-center">
+          <p class="breadcrumbs">
+            <span class="mr-2"><a href="{% url 'home' %}">Home</a></span>
+            <span class="mr-2">/</span>
+            <span>Shop</span></p>
+          <h1 class="mb-0 bread">Product Collection</h1>
         </div>
       </div>
     </div>
   </div>
-</section>
+
+  <section class="ftco-section bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 col-lg-10 order-md-last">
+          <div class="row">
+              {% for obj in object_list %}
+                  {% include "products/snippets/card.html" with instance=obj %}
+              {% endfor %}
+          </div>
+          {% if is_paginated %}
+            <div class="row mt-5">
+              <div class="col text-center">
+                <div class="block-27">
+                  <ul>
+                    {% if page_obj.has_previous %}
+                    <li><a href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+                    {% endif %}
+                    <li class="active"><span><a href="?page={{ page_obj.age_number }}">{{ page_obj.number }}</a></span></li>
+                    {% if page_obj.has_next %}
+                    <li><a href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+                    {% endif %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="col-md-4 col-lg-2 sidebar border-right">
+          <div class="sidebar-box-2">
+            <h2 class="heading mb-4"><a href="#">Brands</a></h2>
+            <ul>
+              {% for brand in brands %}
+                <li {% if filtered_brand and filtered_brand != "undefined" and brand.id != filtered_brand|add:'0' %}hidden{% endif %}>
+                <!-- <li> -->
+                  <div class="custom-control custom-checkbox mr-sm-2 ">
+                    <input type="checkbox" class="custom-control-input my-filter" id='{{ brand.brand }}' value='{{ brand.id }}' filter-type='brand' {% if brand.id == filtered_brand|add:'0' %}checked{% endif %}>
+                    <label class="custom-control-label" for='{{ brand.brand }}'>{{ brand.brand }}</label>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="sidebar-box-2">
+            <h2 class="heading mb-4"><a href="#">Types</a></h2>
+            <ul>
+              {% for type in types %}
+                <li {% if filtered_type and filtered_type != "undefined" and type.id != filtered_type|add:'0' %}hidden{% endif %}>
+                  <div class="custom-control custom-checkbox mr-sm-2">
+                    <input type="checkbox" class="custom-control-input my-filter" id='{{ type.type }}' value='{{ type.id }}' filter-type='type' {% if type.id == filtered_type|add:'0' %}checked{% endif %}>
+                    <label class="custom-control-label" for='{{ type.type }}'>{{ type.type }}</label>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="sidebar-box-2">
+            <h2 class="heading mb-4"><a href="#">Sizes</a></h2>
+            <ul>
+              {% for size in sizes %}
+                <li {% if filtered_size and filtered_size != "undefined" and size.id != filtered_size|add:'0' %}hidden{% endif %}>
+                  <div class="custom-control custom-checkbox mr-sm-2">
+                    <input type="checkbox" class="custom-control-input my-filter" id='{{ size.title }}' value='{{ size.id }}' filter-type='size' {% if size.id == filtered_size|add:'0' %}checked{% endif %}>
+                    <label class="custom-control-label" for='{{ size.title }}'>{{ size.title }}</label>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="sidebar-box-2">
+            <h2 class="heading mb-4"><a href="#">Colors</a></h2>
+            <ul>
+              {% for color in colors %}
+                <li {% if filtered_color and filtered_color != "undefined" and color.id != filtered_color|add:'0' %}hidden{% endif %}>
+                  <div class="custom-control custom-checkbox mr-sm-2">
+                    <input type="checkbox" class="custom-control-input my-filter" id='{{ color.title }}' value='{{ color.id }}' filter-type='color' {% if color.id == filtered_color|add:'0' %}checked{% endif %}>
+                    <label class="custom-control-label" for='{{ color.title }}'>{{ color.title }}</label>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
 
 {% endblock %}

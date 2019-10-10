@@ -1,7 +1,7 @@
 {% load static %}
 {% load compress %}
 
-{% url 'about' as about_url %}
+<!-- {% url 'about' as about_url %} -->
 {% url 'account:home' as account_url %}
 {% url "account:user-update" as account_update_url %}
 {% url 'cart:checkout' as cart_checkout_url %}
@@ -26,7 +26,7 @@
           <div class="col-md-9 ftco-animate text-center">
           	<p class="breadcrumbs">
               <span class="mr-2"><a href="{% url 'home' %}">Home</a></span>
-              <span class="mr-2">/</span>
+                <span class="mr-2">/</span>
           {% if request.path == about_url %}
               <span>About</span>
             </p>

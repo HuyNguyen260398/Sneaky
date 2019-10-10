@@ -148,28 +148,49 @@ $(document).ready(function(){
 
   // Billing Option
   $('input:radio[name="billing_option"]').change(function(){
-  // $('.bo').change(function(){
-      // var this = $(this)
-      var billingForm = $('#billing_form')
+      var billingForm = $('#my-billing-form')
 
-      // if (this.value == 'different') {
-      //   // billingForm.removeAttr('hidden')
-      //   alert('different')
-      // }
-
-      // switch($(this).val()) {
-      //   case 'different' :
-      //       alert("different");
-      //       break;
-      //   case 'same' :
-      //       alert("same");
-      //       break;
-      // }
-
-      if (this.checked && this.value == 'different') {
-            alert("different");
-        }
+      switch($(this).val()) {
+        case 'different' :
+            billingForm.removeAttr('hidden');
+            break;
+        case 'same' :
+            billingForm.attr('hidden', true);
+            break;
+      }
   });
 
+  // Filter Products by Properties
+  $("input.my-filter").on('change', function () {
+    event.preventDefault()
+    var props_list = $("input.my-filter");
+    var brand
+    var checked_brand
+    var type
+    var checked_type
+    var size
+    var checked_size
+    var color
+    var checked_color
 
+    props_list.each(function(){
+      var filter_type = $(this).attr('filter-type')
+      if(this.checked){
+        if(filter_type == "brand"){
+          checked_brand = this.value;
+        }
+        if(filter_type == "type"){
+          checked_type = this.value;
+        }
+        if(filter_type == "size"){
+          checked_size = this.value;
+        }
+        if(filter_type == "color"){
+          checked_color = this.value
+        }
+      }
+    });
+    window.location.href = '/products/filter/?brandId=' + checked_brand + '&typeId=' + checked_type + '&sizeId=' + checked_size + '&colorId=' + checked_color
+
+  });
 })
