@@ -49,7 +49,7 @@
 
         <div class="col-md-4 col-lg-2 sidebar border-right">
           <div class="sidebar-box-2">
-            <h2 class="heading mb-4"><a href="#">Brands</a></h2>
+            <h2 class="heading mb-4"><a href="#">Brand</a></h2>
             <ul>
               {% for brand in brands %}
                 <li {% if filtered_brand and filtered_brand != "undefined" and brand.id != filtered_brand|add:'0' %}hidden{% endif %}>
@@ -63,7 +63,7 @@
             </ul>
           </div>
           <div class="sidebar-box-2">
-            <h2 class="heading mb-4"><a href="#">Types</a></h2>
+            <h2 class="heading mb-4"><a href="#">Type</a></h2>
             <ul>
               {% for type in types %}
                 <li {% if filtered_type and filtered_type != "undefined" and type.id != filtered_type|add:'0' %}hidden{% endif %}>
@@ -76,7 +76,20 @@
             </ul>
           </div>
           <div class="sidebar-box-2">
-            <h2 class="heading mb-4"><a href="#">Sizes</a></h2>
+            <h2 class="heading mb-4"><a href="#">Gender</a></h2>
+            <ul>
+              {% for key, value in genders.items %}
+                <li {% if filtered_gender and filtered_gender != "undefined" and key != filtered_gender %}hidden{% endif %}>
+                  <div class="custom-control custom-checkbox mr-sm-2">
+                    <input type="checkbox" class="custom-control-input my-filter" id='{{ value }}' value='{{ key }}' filter-type='gender' {% if key == filtered_gender %}checked{% endif %}>
+                    <label class="custom-control-label" for='{{ value }}'>{{ value }}</label>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="sidebar-box-2">
+            <h2 class="heading mb-4"><a href="#">Size</a></h2>
             <ul>
               {% for size in sizes %}
                 <li {% if filtered_size and filtered_size != "undefined" and size.id != filtered_size|add:'0' %}hidden{% endif %}>
@@ -89,13 +102,26 @@
             </ul>
           </div>
           <div class="sidebar-box-2">
-            <h2 class="heading mb-4"><a href="#">Colors</a></h2>
+            <h2 class="heading mb-4"><a href="#">Color</a></h2>
             <ul>
               {% for color in colors %}
                 <li {% if filtered_color and filtered_color != "undefined" and color.id != filtered_color|add:'0' %}hidden{% endif %}>
                   <div class="custom-control custom-checkbox mr-sm-2">
                     <input type="checkbox" class="custom-control-input my-filter" id='{{ color.title }}' value='{{ color.id }}' filter-type='color' {% if color.id == filtered_color|add:'0' %}checked{% endif %}>
                     <label class="custom-control-label" for='{{ color.title }}'>{{ color.title }}</label>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="sidebar-box-2">
+            <h2 class="heading mb-4"><a href="#">Price</a></h2>
+            <ul>
+              {% for key, value in prices.items %}
+                <li {% if filtered_price and filtered_price != "undefined" and key != filtered_price %}hidden{% endif %}>
+                  <div class="custom-control custom-checkbox mr-sm-2">
+                    <input type="checkbox" class="custom-control-input my-filter" id='{{ value }}' value='{{ key }}' filter-type='price' {% if key == filtered_price %}checked{% endif %}>
+                    <label class="custom-control-label" for='{{ value }}'>{{ value }}</label>
                   </div>
                 </li>
               {% endfor %}

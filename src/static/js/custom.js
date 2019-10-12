@@ -164,14 +164,12 @@ $(document).ready(function(){
   $("input.my-filter").on('change', function () {
     event.preventDefault()
     var props_list = $("input.my-filter");
-    var brand
     var checked_brand
-    var type
     var checked_type
-    var size
+    var checked_gender
     var checked_size
-    var color
     var checked_color
+    var checked_price
 
     props_list.each(function(){
       var filter_type = $(this).attr('filter-type')
@@ -182,15 +180,21 @@ $(document).ready(function(){
         if(filter_type == "type"){
           checked_type = this.value;
         }
+        if(filter_type == "gender"){
+          checked_gender = this.value;
+        }
         if(filter_type == "size"){
           checked_size = this.value;
         }
         if(filter_type == "color"){
           checked_color = this.value
         }
+        if(filter_type == "price"){
+          checked_price = this.value
+        }
       }
     });
-    window.location.href = '/products/filter/?brandId=' + checked_brand + '&typeId=' + checked_type + '&sizeId=' + checked_size + '&colorId=' + checked_color
+    window.location.href = '/products/filter/?brandId=' + checked_brand + '&typeId=' + checked_type + '&genderId=' + checked_gender + '&sizeId=' + checked_size + '&colorId=' + checked_color + '&priceId=' + checked_price
 
   });
 })

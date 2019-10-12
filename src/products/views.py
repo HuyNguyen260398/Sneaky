@@ -69,11 +69,29 @@ class ProductListView(ListView):
         product_sizes = ProductSize.objects.all()
         product_colors = ProductColor.objects.all()
 
+        product_genders = {
+            '1': 'Men',
+            '2': 'Women',
+            '3': 'Boys',
+            '4': 'Girls',
+        }
+
+        product_prices = {
+            '1': 'Under $100',
+            '2': '$100 - $300',
+            '3': '$300 - $500',
+            '4': '$500 - $700',
+            '5': '$700 - $900',
+            '6': 'Above $900',
+        }
+
         context['cart'] = cart_obj
         context['brands'] = product_brands
         context['types'] = product_types
+        context['genders'] = product_genders
         context['sizes'] = product_sizes
         context['colors'] = product_colors
+        context['prices'] = product_prices
 
         return context
 
@@ -95,8 +113,10 @@ class ProductFilterView(ListView):
 
         filtered_brand = request.GET.get('brandId', None)
         filtered_type = request.GET.get('typeId', None)
+        filtered_gender = request.GET.get('genderId', None)
         filtered_size = request.GET.get('sizeId', None)
         filtered_color = request.GET.get('colorId', None)
+        filtered_price = request.GET.get('priceId', None)
 
         cart_obj, new_obj = Cart.objects.new_or_get(request)
         product_brands = ProductBrand.objects.all()
@@ -104,15 +124,35 @@ class ProductFilterView(ListView):
         product_sizes = ProductSize.objects.all()
         product_colors = ProductColor.objects.all()
 
+        product_genders = {
+            '1': 'Men',
+            '2': 'Women',
+            '3': 'Boys',
+            '4': 'Girls',
+        }
+
+        product_prices = {
+            '1': 'Under $100',
+            '2': '$100 - $300',
+            '3': '$300 - $500',
+            '4': '$500 - $700',
+            '5': '$700 - $900',
+            '6': 'Above $900',
+        }
+
         context['cart'] = cart_obj
         context['brands'] = product_brands
         context['types'] = product_types
+        context['genders'] = product_genders
         context['sizes'] = product_sizes
         context['colors'] = product_colors
+        context['prices'] = product_prices
         context['filtered_brand'] = filtered_brand
         context['filtered_type'] = filtered_type
+        context['filtered_gender'] = filtered_gender
         context['filtered_size'] = filtered_size
         context['filtered_color'] = filtered_color
+        context['filtered_price'] = filtered_price
 
         return context
 
@@ -122,17 +162,51 @@ class ProductFilterView(ListView):
 
         filtered_brand = request.GET.get('brandId', None)
         filtered_type = request.GET.get('typeId', None)
+        filtered_gender = request.GET.get('genderId', None)
         filtered_size = request.GET.get('sizeId', None)
         filtered_color = request.GET.get('colorId', None)
+        filtered_price = request.GET.get('priceId', None)
+
+        product_genders = {
+            '1': 'men',
+            '2': 'women',
+            '3': 'boys',
+            '4': 'girls',
+        }
+
+        product_prices = {
+            '1': 'Under $100',
+            '2': '$100 - $300',
+            '3': '$300 - $500',
+            '4': '$500 - $700',
+            '5': '$700 - $900',
+            '6': 'Above $900',
+        }
 
         if filtered_brand is not None and filtered_brand != 'undefined':
             product_variants = product_variants.filter(product__brand__id=filtered_brand)
         if filtered_type is not None and filtered_type != 'undefined':
             product_variants = product_variants.filter(product__type__id=filtered_type)
+        if filtered_gender is not None and filtered_gender != 'undefined':
+            product_variants = product_variants.filter(
+                product__gender=product_genders[filtered_gender])
         if filtered_size is not None and filtered_size != 'undefined':
             product_variants = product_variants.filter(size__id=filtered_size)
         if filtered_color is not None and filtered_color != 'undefined':
             product_variants = product_variants.filter(color__id=filtered_color)
+        if filtered_price is not None and filtered_price != 'undefined':
+            if product_prices[filtered_price] == 'Under $100':
+                product_variants = product_variants.filter(product__price__lte=100)
+            elif product_prices[filtered_price] == '$100 - $300':
+                product_variants = product_variants.filter(product__price__range=(100, 300))
+            elif product_prices[filtered_price] == '$300 - $500':
+                product_variants = product_variants.filter(product__price__range=(300, 500))
+            elif product_prices[filtered_price] == '$500 - $700':
+                product_variants = product_variants.filter(product__price__range=(500, 700))
+            elif product_prices[filtered_price] == '$700 - $900':
+                product_variants = product_variants.filter(product__price__range=(700, 900))
+            elif product_prices[filtered_price] == 'Above $900':
+                product_variants = product_variants.filter(product__price__gt=900)
 
         return product_variants.order_by('id')
 

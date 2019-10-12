@@ -24,11 +24,29 @@ class SearchProducView(ListView):
         product_sizes = ProductSize.objects.all()
         product_colors = ProductColor.objects.all()
 
+        product_genders = {
+            '1': 'Men',
+            '2': 'Women',
+            '3': 'Boys',
+            '4': 'Girls',
+        }
+
+        product_prices = {
+            '1': 'Under $100',
+            '2': '$100 - $300',
+            '3': '$300 - $500',
+            '4': '$500 - $700',
+            '5': '$700 - $900',
+            '6': 'Above $900',
+        }
+
         context['query'] = query
         context['brands'] = product_brands
         context['types'] = product_types
+        context['genders'] = product_genders
         context['sizes'] = product_sizes
         context['colors'] = product_colors
+        context['prices'] = product_prices
         return context
 
     def get_queryset(self, *args, **kwargs):

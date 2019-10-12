@@ -148,71 +148,40 @@ $(document).ready(function(){
 
   // Billing Option
   $('input:radio[name="billing_option"]').change(function(){
-  // $('.bo').change(function(){
-      // var this = $(this)
       var billingForm = $('#my-billing-form')
-
-      // if (this.value == 'different') {
-      //   // billingForm.removeAttr('hidden')
-      //   alert('different')
-      // }
 
       switch($(this).val()) {
         case 'different' :
-            // alert("different");
             billingForm.removeAttr('hidden');
             break;
         case 'same' :
-            // alert("same");
             billingForm.attr('hidden', true);
             break;
       }
-
-      // if (this.checked && this.value == 'different') {
-      //   alert("different");
-      //   billingForm.removeAttr('hidden')
-      // } else {
-      //   billingForm.addAttr('hidden')
-      // }
   });
 
   // Filter Products by Properties
   $("input.my-filter").on('change', function () {
     event.preventDefault()
-    // Loop all these checkboxes which are checked
-    // $("input.my-filter:checked").each(function(){
-    //     alert("it works");
-    //     // Use $(this).val() to get the Bike, Car etc.. value
-    // });
     var props_list = $("input.my-filter");
-    // var checked_props = [];
-
-    var brand
     var checked_brand
-    var type
     var checked_type
-    var size
+    var checked_gender
     var checked_size
-    var color
     var checked_color
-
-    // var checked_prop
-
-    // if(this.checked){
-    //   alert("checked - " + this.value);
-    // } else {
-    //   alert("unchecked - " + prop);
-    // }
+    var checked_price
 
     props_list.each(function(){
       var filter_type = $(this).attr('filter-type')
       if(this.checked){
-        // checked_props.push(this.value);
         if(filter_type == "brand"){
           checked_brand = this.value;
         }
         if(filter_type == "type"){
           checked_type = this.value;
+        }
+        if(filter_type == "gender"){
+          checked_gender = this.value;
         }
         if(filter_type == "size"){
           checked_size = this.value;
@@ -220,54 +189,12 @@ $(document).ready(function(){
         if(filter_type == "color"){
           checked_color = this.value
         }
-        // checked_prop = this.value;
+        if(filter_type == "price"){
+          checked_price = this.value
+        }
       }
     });
-
-
-    // sendFilterBag("brand", checked_props)
-
-    // window.location.href = '/products/?brand=' + checked_props[0]
-    window.location.href = '/products/filter/?brandId=' + checked_brand + '&typeId=' + checked_type + '&sizeId=' + checked_size + '&colorId=' + checked_color
+    window.location.href = '/products/filter/?brandId=' + checked_brand + '&typeId=' + checked_type + '&genderId=' + checked_gender + '&sizeId=' + checked_size + '&colorId=' + checked_color + '&priceId=' + checked_price
 
   });
-
-  // by TYPE
-  // $("input.my-filter-type").on('change', function () {
-  //   event.preventDefault()
-  //   var props_list = $("input.my-filter-brand");
-  //   var checked_type;
-  //
-  //   props_list.each(function(){
-  //     if(this.checked){
-  //       checked_type = this.value;
-  //     }
-  //   });
-  //
-  //   window.location.href = '/products/?brand=' + checked_props[0]
-  //
-  // });
-
-  function sendFilterBag(props_type, props){
-    console.log(props_type)
-    console.log(props)
-
-    $.ajax({
-      url: '/products/',
-      method: "GET",
-      data: {
-        props_type: props_type,
-        props: props,
-      },
-      // dataType: 'json',
-      success: function(data){
-        // console.log(data.selected)
-        console.log("filtered")
-      },
-      error: function(error){
-        console.log("unfiltered")
-      }
-    })
-  }
-
 })

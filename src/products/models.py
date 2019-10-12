@@ -12,6 +12,13 @@ from django.urls import reverse
 
 from sneaky.utils import unique_slug_generator, get_filename
 
+AGES_GENDERS = (
+    ('men', 'Men'),
+    ('women', 'Women'),
+    ('boys', 'Boys'),
+    ('girls', 'Girls'),
+)
+
 
 def get_filename_ext(filepath):
     base_name = os.path.basename(filepath)
@@ -118,6 +125,7 @@ class Product(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     type = models.ForeignKey(ProductType, on_delete=models.CASCADE, blank=True, null=True)
     brand = models.ForeignKey(ProductBrand, on_delete=models.CASCADE, blank=True, null=True)
+    gender = models.CharField(max_length=120, default='men', choices=AGES_GENDERS)
 
     objects = ProductManager()
 
