@@ -30,7 +30,7 @@ DEBUG = True
 # DEBUG can be True/False or 1/0
 # DEBUG = int(os.environ.get('DEBUG', default=1))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['sneaky-shop.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
