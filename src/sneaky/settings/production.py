@@ -20,12 +20,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '3!gvz!kq2c@-fp29n7#w%(_eb$a!k(ui2yeb&fh%jt9326lj+h'
+# SECRET_KEY = '3!gvz!kq2c@-fp29n7#w%(_eb$a!k(ui2yeb&fh%jt9326lj+h'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['sneaky-shop.herokuapp.com']
 
 
 # Application definition
@@ -37,7 +38,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'compressor'
+    'django_countries',
+    'accounts',
+    'addresses',
+    'billing',
+    'carts',
+    'compressor',
+    'crispy_forms',
+    'marketing',
+    'orders',
+    'products',
+    'search',
 
 ]
 
@@ -144,3 +155,50 @@ STATICFILES_FINDERS = [
 COMPRESS_PRECOMPILERS = (
     ('text/x-scss', 'django_libsass.SassCompiler'),
 )
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+PROTECTED_ROOT = os.path.join(BASE_DIR, 'protected_media')
+
+AUTH_USER_MODEL = 'accounts.User'
+LOGIN_URL = '/login/'
+LOGIN_URL_REDIRECT = '/'
+LOGOUT_URL = '/logout/'
+LOGOUT_REDIRECT_URL = '/login/'
+ROOT_URLCONF = 'sneaky.urls'
+
+FORCE_SESSION_TO_ONE = False
+FORCE_INACTIVE_USER_END_SESSION = False
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'prj.ecom.pydj@gmail.com'
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "Python337Django22")
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'Python eCommerce <prj.ecom.pydj@gmail.com>'
+BASE_URL = '127.0.0.1:8000'
+
+# MAILCHIMP_API_KEY = os.environ["MAILCHIMP_API_KEY"] # Use this when running server with heroku
+MAILCHIMP_API_KEY = os.environ.get("MAILCHIMP_API_KEY", "026afa813150e4672a0783ad62cb4a21-us3")
+MAILCHIMP_DATA_CENTER = "us3"
+MAILCHIMP_EMAIL_LIST_ID = os.environ.get("MAILCHIMP_EMAIL_LIST_ID", "f63ed0b189")
+
+STRIPE_SEC_KEY = os.environ.get("STRIPE_SEC_KEY", "sk_test_L2UkxaY9kJLqL3veVS0fCuLv00uVo6w8I4")
+STRIPE_PUB_KEY = os.environ.get("STRIPE_PUB_KEY", "pk_test_8hljcboVHoSIRIswWFCEwlIY00Xdsw19Ue")
+
+MANAGERS = (
+    ('Admin', 'prj.ecom.pydj@gmail.com'),
+)
+ADMINS = MANAGERS
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+CORS_REPLACE_HTTPS_REFERER = True
+HOST_SCHEME = "https://"
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_SECONDS = 1000000
+SECURE_FRAME_DENY = True
