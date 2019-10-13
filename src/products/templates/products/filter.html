@@ -22,32 +22,7 @@
   <section class="ftco-section bg-light">
     <div class="container">
       <div class="row">
-        <div class="col-md-8 col-lg-10 order-md-last pl-5">
-          <div class="row">
-            {% for obj in object_list %}
-                {% include "products/snippets/card.html" with instance=obj ins_type="variant" %}
-            {% endfor %}
-          </div>
-          {% if is_paginated %}
-            <div class="row mt-5">
-              <div class="col text-center">
-                <div class="block-27">
-                  <ul>
-                    {% if page_obj.has_previous %}
-                    <li><a href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
-                    {% endif %}
-                    <li class="active"><span><a href="?page={{ page_obj.age_number }}">{{ page_obj.number }}</a></span></li>
-                    {% if page_obj.has_next %}
-                    <li><a href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
-                    {% endif %}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          {% endif %}
-        </div>
-
-        <div class="col-md-4 col-lg-2 sidebar border-right">
+        <div class="col-md-4 col-lg-2 col-sm-12 sidebar border-right">
           <div class="sidebar-box-2">
             <h2 class="heading mb-4"><a href="#">Brand</a></h2>
             <ul>
@@ -127,6 +102,30 @@
               {% endfor %}
             </ul>
           </div>
+        </div>
+        <div class="col-md-8 col-lg-10 order-md-last">
+          <div class="row">
+            {% for obj in object_list %}
+                {% include "products/snippets/card.html" with instance=obj ins_type="variant" %}
+            {% endfor %}
+          </div>
+          {% if is_paginated %}
+            <div class="row mt-5">
+              <div class="col text-center">
+                <div class="block-27">
+                  <ul>
+                    {% if page_obj.has_previous %}
+                    <li><a href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+                    {% endif %}
+                    <li class="active"><span><a href="?page={{ page_obj.age_number }}">{{ page_obj.number }}</a></span></li>
+                    {% if page_obj.has_next %}
+                    <li><a href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+                    {% endif %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>
