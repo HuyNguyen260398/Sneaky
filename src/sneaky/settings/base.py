@@ -131,7 +131,6 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
@@ -176,10 +175,10 @@ MAILCHIMP_EMAIL_LIST_ID = os.environ.get("MAILCHIMP_EMAIL_LIST_ID")
 STRIPE_SEC_KEY = os.environ.get("STRIPE_SEC_KEY", "sk_test_L2UkxaY9kJLqL3veVS0fCuLv00uVo6w8I4")
 STRIPE_PUB_KEY = os.environ.get("STRIPE_PUB_KEY", "pk_test_8hljcboVHoSIRIswWFCEwlIY00Xdsw19Ue")
 
-MANAGERS = (
+ADMINS = (
     ('Admin', 'prj.ecom.pydj@gmail.com'),
 )
-ADMINS = MANAGERS
+MANAGERS = ADMINS
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
