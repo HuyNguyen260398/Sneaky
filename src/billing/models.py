@@ -11,6 +11,7 @@ User = settings.AUTH_USER_MODEL
 
 
 STRIPE_SEC_KEY = getattr(settings, "STRIPE_SEC_KEY", "sk_test_L2UkxaY9kJLqL3veVS0fCuLv00uVo6w8I4")
+# STRIPE_SEC_KEY = getattr(settings, "STRIPE_SEC_KEY", "abc123")
 stripe.api_key = STRIPE_SEC_KEY
 
 

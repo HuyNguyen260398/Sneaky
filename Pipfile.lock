@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "bc3c5fd7392a4cd8774c6d3c766ed7642e222e4c84ca2d79a8a0aeb57479d88d"
+            "sha256": "720f5885fdf8b62fd281c720736aa2ecd0b440e8df32d38b2f3c821c77122d8c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -18,18 +18,18 @@
     "default": {
         "boto3": {
             "hashes": [
-                "sha256:4fbd407827bf79851bc86ac490ef31937e18d4133d464ea3774ee46d73b79251",
-                "sha256:ad9b04038c0b4c45c08af626ecce9226e0d33dd8ef0bf473434b77d958df8c2c"
+                "sha256:2c5c0ee93e574220ed70a12099276b44d4ca6a1bbe0fdcce4156417db6b96a41",
+                "sha256:b169b634089d3a73d65f4c4573989d76e89cb10950669883eb82519fbadc8514"
             ],
             "index": "pypi",
-            "version": "==1.9.249"
+            "version": "==1.9.252"
         },
         "botocore": {
             "hashes": [
-                "sha256:0b9512a7cd56b2b903bd57c9818c242223ac7d9c10d7fa9e26616e365bb80b35",
-                "sha256:fb0ba09bcd72872306729cedcd3da7f8afb7cd03efea82e3716db3890c04088e"
+                "sha256:30c43c2f88be51a2bc9ed3b8c0d3093d3865698576a6dda557cd04734dc73eff",
+                "sha256:a3160078343577b38e459b9d599d7fd4e83710fd0baeafcc913873bc6c4a54cf"
             ],
-            "version": "==1.12.249"
+            "version": "==1.12.252"
         },
         "certifi": {
             "hashes": [
@@ -86,11 +86,19 @@
         },
         "django-crispy-forms": {
             "hashes": [
-                "sha256:5952bab971110d0b86c278132dae0aa095beee8f723e625c3d3fa28888f1675f",
-                "sha256:705ededc554ad8736157c666681165fe22ead2dec0d5446d65fc9dd976a5a876"
+                "sha256:0320b303420fec9ce94e045321dfd180ca0e31e0336211c5d30ad0bda5ebbb5d",
+                "sha256:22b6634e3a6316623e4eb062527fe5be5f97ea8b83020c65bcd8fac4747807b5"
             ],
             "index": "pypi",
-            "version": "==1.7.2"
+            "version": "==1.8.0"
+        },
+        "django-environ": {
+            "hashes": [
+                "sha256:6c9d87660142608f63ec7d5ce5564c49b603ea8ff25da595fd6098f6dc82afde",
+                "sha256:c57b3c11ec1f319d9474e3e5a79134f40174b17c7cc024bbb2fad84646b120c4"
+            ],
+            "index": "pypi",
+            "version": "==0.4.5"
         },
         "django-libsass": {
             "hashes": [

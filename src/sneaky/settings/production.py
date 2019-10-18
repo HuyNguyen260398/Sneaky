@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = '3!gvz!kq2c@-fp29n7#w%(_eb$a!k(ui2yeb&fh%jt9326lj+h'
-SECRET_KEY = os.environ.get('SECRET_KEY', '3!gvz!kq2c@-fp29n7#w%(_eb$a!k(ui2yeb&fh%jt9326lj+h')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'sdfawadg2ad43vq427jwsh')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -176,25 +176,24 @@ FORCE_SESSION_TO_ONE = False
 FORCE_INACTIVE_USER_END_SESSION = False
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'prj.ecom.pydj@gmail.com'
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "Python337Django22")
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'abc123')
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "abc123")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Python eCommerce <prj.ecom.pydj@gmail.com>'
 # BASE_URL = '127.0.0.1:8000'
 
 # MAILCHIMP_API_KEY = os.environ["MAILCHIMP_API_KEY"] # Use this when running server with heroku
-MAILCHIMP_API_KEY = os.environ.get("MAILCHIMP_API_KEY", "026afa813150e4672a0783ad62cb4a21-us3")
-MAILCHIMP_DATA_CENTER = "us3"
-MAILCHIMP_EMAIL_LIST_ID = os.environ.get("MAILCHIMP_EMAIL_LIST_ID", "f63ed0b189")
+MAILCHIMP_API_KEY = os.environ.get("MAILCHIMP_API_KEY", "abc123")
+MAILCHIMP_DATA_CENTER = os.environ.get("MAILCHIMP_DATA_CENTER", "abc123")
+MAILCHIMP_EMAIL_LIST_ID = os.environ.get("MAILCHIMP_EMAIL_LIST_ID", "abc123")
 
-STRIPE_SEC_KEY = os.environ.get("STRIPE_SEC_KEY", "sk_test_L2UkxaY9kJLqL3veVS0fCuLv00uVo6w8I4")
-STRIPE_PUB_KEY = os.environ.get("STRIPE_PUB_KEY", "pk_test_8hljcboVHoSIRIswWFCEwlIY00Xdsw19Ue")
+STRIPE_SEC_KEY = os.environ.get("STRIPE_SEC_KEY", "abc123")
+STRIPE_PUB_KEY = os.environ.get("STRIPE_PUB_KEY", "abc123")
 
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'AKIAQE2WXIOJP6DB7735')
-AWS_SECRET_ACCESS_KEY = os.environ.get(
-    'AWS_SECRET_ACCESS_KEY', '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')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', 'sneaky-media-files')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'abc123')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', 'abc123')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', 'abc123')
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'

@@ -10,6 +10,9 @@ import stripe
 STRIPE_SEC_KEY = getattr(settings, "STRIPE_SEC_KEY", "sk_test_L2UkxaY9kJLqL3veVS0fCuLv00uVo6w8I4")
 STRIPE_PUB_KEY = getattr(settings, "STRIPE_PUB_KEY", "pk_test_8hljcboVHoSIRIswWFCEwlIY00Xdsw19Ue")
 
+# STRIPE_SEC_KEY = getattr(settings, "STRIPE_SEC_KEY", "abc123")
+# STRIPE_PUB_KEY = getattr(settings, "STRIPE_PUB_KEY", "abc123")
+
 stripe.api_key = STRIPE_SEC_KEY
 
 
