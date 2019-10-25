@@ -7,7 +7,7 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
 
 from sneaky.utils import unique_slug_generator, get_filename
@@ -40,13 +40,13 @@ def upload_image_path(instance, filename):
 
 
 class ProductBrand(models.Model):
-    brand = models.CharField(max_length=120)
+    title = models.CharField(max_length=120)
     email = models.CharField(max_length=120)
     slug = models.SlugField(blank=True, unique=True)
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.brand
+        return self.title
 
 
 def productbrand_pre_save_receiver(sender, instance, *args, **kwargs):
@@ -58,12 +58,12 @@ pre_save.connect(productbrand_pre_save_receiver, sender=ProductBrand)
 
 
 class ProductType(models.Model):
-    type = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
     slug = models.SlugField(blank=True, unique=True)
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.type
+        return self.title
 
 
 def producttype_pre_save_receiver(sender, instance, *args, **kwargs):
@@ -88,9 +88,6 @@ class ProductQuerySet(models.QuerySet):
             Q(price__icontains=query)
         )
         return self.filter(lookups).distinct()
-
-    # def filter(self, query):
-    #     return self.all()
 
 
 class ProductManager(models.Manager):
@@ -231,8 +228,8 @@ class ProductVariantManager(models.Manager):
 
 
 class ProductVariant(models.Model):
-    title = models.CharField(max_length=120)
-    slug = models.SlugField(blank=True, unique=True)
+    title = models.CharField(max_length=120, null=True, blank=True, editable=False)
+    slug = models.SlugField(blank=True, unique=True, editable=False)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
     color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, null=True, blank=True)
     size = models.ForeignKey(ProductSize, on_delete=models.CASCADE, null=True, blank=True)
@@ -273,6 +270,9 @@ class ProductVariant(models.Model):
 
 
 def productvariant_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.title:
+        instance.title = "{p}-{c}-{s}".format(p=instance.product.id,
+                                              c=instance.color.title, s=instance.size.title)
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
 

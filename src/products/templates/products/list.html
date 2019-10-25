@@ -30,8 +30,8 @@
                 <li {% if filtered_brand and filtered_brand != "undefined" and brand.id != filtered_brand|add:'0' %}hidden{% endif %}>
                 <!-- <li> -->
                   <div class="custom-control custom-checkbox mr-sm-2 ">
-                    <input type="checkbox" class="custom-control-input my-filter" id='{{ brand.brand }}' value='{{ brand.id }}' filter-type='brand' {% if brand.id == filtered_brand|add:'0' %}checked{% endif %}>
-                    <label class="custom-control-label" for='{{ brand.brand }}'>{{ brand.brand }}</label>
+                    <input type="checkbox" class="custom-control-input my-filter" id='{{ brand.title }}' value='{{ brand.id }}' filter-type='brand' {% if brand.id == filtered_brand|add:'0' %}checked{% endif %}>
+                    <label class="custom-control-label" for='{{ brand.title }}'>{{ brand.title }}</label>
                   </div>
                 </li>
               {% endfor %}
@@ -43,8 +43,8 @@
               {% for type in types %}
                 <li {% if filtered_type and filtered_type != "undefined" and type.id != filtered_type|add:'0' %}hidden{% endif %}>
                   <div class="custom-control custom-checkbox mr-sm-2">
-                    <input type="checkbox" class="custom-control-input my-filter" id='{{ type.type }}' value='{{ type.id }}' filter-type='type' {% if type.id == filtered_type|add:'0' %}checked{% endif %}>
-                    <label class="custom-control-label" for='{{ type.type }}'>{{ type.type }}</label>
+                    <input type="checkbox" class="custom-control-input my-filter" id='{{ type.title }}' value='{{ type.id }}' filter-type='type' {% if type.id == filtered_type|add:'0' %}checked{% endif %}>
+                    <label class="custom-control-label" for='{{ type.title }}'>{{ type.title }}</label>
                   </div>
                 </li>
               {% endfor %}
@@ -106,7 +106,9 @@
         <div class="col-md-8 col-lg-10 order-md-last">
           <div class="row">
             {% for obj in object_list %}
+              <div class="col-sm-6 col-md-6 col-lg-4 ftco-animate">
                 {% include "products/snippets/card.html" with instance=obj %}
+              </div>
             {% endfor %}
           </div>
           {% if is_paginated %}

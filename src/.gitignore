@@ -1,6 +1,7 @@
 sneaky/settings/local.py
 db.sqlite3
 .env
+mediafiles
 
 .py[cod]
 

@@ -24,6 +24,10 @@ class ProductAdmin(admin.ModelAdmin):
         model = ProductVariant
 
 
+class ProductVariantAdmin(admin.ModelAdmin):
+    readonly_fields = ["title", "slug"]
+
+
 admin.site.register(Product)
 
 admin.site.register(ProductType)

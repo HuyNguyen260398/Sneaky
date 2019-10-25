@@ -4,11 +4,16 @@ from django.shortcuts import render
 
 from .forms import ContactForm
 
+from products.models import Product, ProductVariant
+
 
 def home_page(request):
+    featured_products = Product.objects.featured()
+
     context = {
         'title': 'Home Page',
         'content': 'Welcome to the home page!',
+        'featured_products': featured_products,
     }
     if request.user.is_authenticated:
         context['premium_content'] = 'Premium Content!!!'

@@ -23,6 +23,23 @@ from .models import (
 )
 
 
+def products_api_list_view(request):
+    products_json_list = [{
+        'id': p.id,
+        'title': p.title,
+        'slug': p.slug,
+        'product': p.product.title,
+        'type': p.product.type.title,
+        'brand': p.product.brand.title,
+        'color': p.color.title,
+        'size': p.size.title,
+        'gender': p.product.gender,
+        'price': p.product.price,
+    } for p in ProductVariant.objects.all()]
+    products_data = {'products': products_json_list}
+    return JsonResponse(products_data)
+
+
 class ProductFeatureListView(ListView):
     template_name = 'products/list.html'
 
