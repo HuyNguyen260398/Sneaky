@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+from sneaky.aws.conf import *
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     'orders',
     'products',
     'search',
+    'storages',
 
 ]
 

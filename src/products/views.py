@@ -266,12 +266,17 @@ class ProductDetailSlugView(DetailView):
         colors = qs.get_colors(product=instance.product)
         sizes = qs.filter(product=instance.product).filter(color=instance.color)
         imgs = instance.get_imgs()
+        related_products = Product.objects.filter(
+            brand=instance.product.brand).exclude(id=instance.product.id)[:4:]
+        if related_products.count() < 1:
+            related_products = Product.objects.all()[:4:]
 
         cart_obj, new_obj = Cart.objects.new_or_get(self.request)
         context['cart'] = cart_obj
         context['imgs'] = imgs
         context['colors'] = colors
         context['sizes'] = sizes
+        context['related_products'] = related_products
         return context
 
 

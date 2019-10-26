@@ -20,6 +20,7 @@ django-crispy-forms = "*"
 boto3 = "*"
 django-storages = "*"
 django-environ = "*"
+boto = "*"
 
 [requires]
 python_version = "3.7"

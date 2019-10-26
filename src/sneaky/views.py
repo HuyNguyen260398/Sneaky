@@ -8,11 +8,14 @@ from products.models import Product, ProductVariant
 
 
 def home_page(request):
-    featured_products = Product.objects.featured()
+    products = Product.objects.all()
+    new_releases = products.order_by('-timestamp')[:4:]
+    featured_products = products.featured()[:4:]
 
     context = {
         'title': 'Home Page',
         'content': 'Welcome to the home page!',
+        'new_releases': new_releases,
         'featured_products': featured_products,
     }
     if request.user.is_authenticated:

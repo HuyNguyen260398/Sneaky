@@ -168,6 +168,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 PROTECTED_ROOT = os.path.join(BASE_DIR, 'protected_media')
 
+
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_URL = '/login/'
 LOGIN_URL_REDIRECT = '/'

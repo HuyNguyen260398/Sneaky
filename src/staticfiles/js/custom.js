@@ -198,10 +198,87 @@ $(document).ready(function(){
 
   });
 
-  // Custom slide
+  // Kore Chatbot
+  function assertion(options, callback) {
+    var jsonData = {
+      "clientId": botOptions.clientId,
+      "clientSecret": botOptions.clientSecret,
+      "identity": botOptions.userIdentity,
+      "aud": "",
+      "isAnonymous": true
+    };
+    $.ajax({
+      url: botOptions.JWTUrl,
+      type: 'post',
+      data: jsonData,
+      dataType: 'json',
+      success: function (data) {
+        options.assertion = data.jwt;
+        options.handleError = koreBot.showError;
+        options.chatHistory = koreBot.chatHistory;
+        options.botDetails = koreBot.botDetails;
+        callback(null, options);
+        setTimeout(function () {
+          if (koreBot && koreBot.initToken) {
+            koreBot.initToken(options);
+          }
+        }, 2000);
+      },
+      error: function (err) {
+        koreBot.showError(err.responseText);
+      }
+    });
+  }
+
+  var botOptions = {};
+  botOptions.logLevel = 'debug';
+  botOptions.koreAPIUrl = "https://bots.kore.ai/api/";
+  botOptions.koreSpeechAPIUrl = "https://speech.kore.ai/";
+  //botOptions.bearer = "bearer xyz-------------------";
+  botOptions.ttsSocketUrl = 'wss://speech.kore.ai/tts/ws';
+  botOptions.recorderWorkerPath = '../libs/recorderWorker.js';
+  botOptions.assertionFn = assertion;
+  botOptions.koreAnonymousFn = koreAnonymousFn;
+
+  // To modify the web socket url use the following option
+  // botOptions.reWriteSocketURL = {
+          //     protocol: 'PROTOCOL_TO_BE_REWRITTEN',
+          //     hostname: 'HOSTNAME_TO_BE_REWRITTEN',
+          //     port: 'PORT_TO_BE_REWRITTEN'
+          // };
+
+  botOptions.JWTUrl ="https://demo.kore.net/users/sts";
+  botOptions.userIdentity = 'huynguyen260398@gmail.com';// Provide users email id here
+  botOptions.botInfo = {name:"Sneaky Virtual Assistant","_id":"st-2812988b-4560-57ca-ae27-f951d057d081"}; // bot name is case sensitive
+  botOptions.clientId   = "cs-19ebb572-62b6-5d6c-93d6-81122c29b51c";
+  botOptions.clientSecret="ahh/OJulIb7xaTdtXYGb2NmfxQY8TzqWQFmC283jf+o=";
+
+  var chatConfig={
+    botOptions:botOptions,
+    allowIframe: false,
+    isSendButton: false,
+    isTTSEnabled: true,
+    isSpeechEnabled: true,
+    allowGoogleSpeech: false,
+    allowLocation: true,
+    loadHistory: true,
+    messageHistoryLimit: 10,
+    autoEnableSpeechAndTTS: false,
+    graphLib: "d3",
+    googleMapsAPIKey:"",
+  };
   /*
-    Carousel
-*/
+    allowGoogleSpeech will use Google cloud service api.
+    Google speech key is required for all browsers except chrome.
+    On Windows 10, Microsoft Edge will support speech recognization.
+   */
+  var koreBot = koreBotChat();
+  koreBot.show(chatConfig);
+  $('.openChatWindow').click(function () {
+    koreBot.show(chatConfig);
+  });
+
+  // Custom slide
   $('#carousel-example').on('slide.bs.carousel', function (e) {
       /*
           CC 2.0 License Iatek LLC 2018 - Attribution required
@@ -224,4 +301,5 @@ $(document).ready(function(){
           }
       }
   });
+
 })
