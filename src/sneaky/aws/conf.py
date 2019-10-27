@@ -1,8 +1,7 @@
 import datetime
 import os
 
-# AWS_ACCESS_KEY_ID = "AKIAQE2WXIOJP2FXT7HF"
-# AWS_SECRET_ACCESS_KEY = "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"
+
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'abc123')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', 'abc123')
 AWS_FILE_EXPIRE = 200
