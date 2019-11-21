@@ -261,7 +261,7 @@ $(document).ready(function(){
     isSpeechEnabled: true,
     allowGoogleSpeech: false,
     allowLocation: true,
-    loadHistory: true,
+    loadHistory: false,
     messageHistoryLimit: 10,
     autoEnableSpeechAndTTS: false,
     graphLib: "d3",

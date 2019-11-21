@@ -21,6 +21,10 @@ boto3 = "*"
 django-storages = "*"
 django-environ = "*"
 boto = "*"
+django-extensions = "*"
+pygraphviz = "*"
+pyparsing = "*"
+pydotplus = "*"
 
 [requires]
 python_version = "3.7"
