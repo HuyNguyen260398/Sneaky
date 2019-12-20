@@ -116,7 +116,7 @@ class ProductListView(ListView):
         request = self.request
         products = Product.objects.all()
 
-        return products.order_by('id')
+        return products.order_by('-id')
 
 
 class ProductFilterView(ListView):

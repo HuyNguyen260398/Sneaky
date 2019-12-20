@@ -149,7 +149,7 @@ class Product(models.Model):
         return qs
 
     def get_first_variant(self):
-        qs = self.get_variants()[0]
+        qs = self.get_variants().order_by('id')[0]
         return qs
 
     def get_first_variant_img(self):
@@ -245,7 +245,7 @@ class ProductVariant(models.Model):
 
     def get_absolute_url(self):
         first_variant = ProductVariant.objects.filter(
-            product=self.product).filter(color=self.color)[0]
+            product=self.product).filter(color=self.color).order_by('id')[0]
         return reverse('products:detail', kwargs={'slug': first_variant.slug})
 
     def get_add_to_cart_url(self):
@@ -265,7 +265,7 @@ class ProductVariant(models.Model):
         return qs
 
     def get_main_img(self):
-        qs = self.get_imgs()[0]
+        qs = self.get_imgs().order_by('id')[0]
         return qs
 
 

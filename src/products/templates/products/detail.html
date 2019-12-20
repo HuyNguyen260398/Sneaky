@@ -28,14 +28,14 @@
           <div class="row">
             <div class="col-12">
               {% for image in imgs %}
-                {% if forloop.first %}
+                {% if forloop.last %}
                   <a href="{{ image.image.url }}" class="image-popup"><img src="{{ image.image.url }}" class="img-fluid" alt="Colorlib Template"></a>
                 {% endif %}
               {% endfor %}
             </div>
           </div>
           <div class="row my-3">
-            {% for image in imgs|slice:"1:" %}
+            {% for image in imgs|slice:":3" %}
               <div class="col-4">
                 <a href="{{ image.image.url }}" class="image-popup"><img src="{{ image.image.url }}" class="img-fluid" alt="Colorlib Template"></a>
               </div>

@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'sdfawadg2ad43vq427jwsh')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['sneaky-shop.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['winkel-shop.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
